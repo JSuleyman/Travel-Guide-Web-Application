@@ -11,5 +11,5 @@ public class ExceptionHandlers {
     @ExceptionHandler(value = NotUniqeUser.class)
     public ResponseEntity<Object> userException() {
         return new ResponseEntity<>("This email is not uniqe", HttpStatus.FOUND);
-    }
+      }
 }
