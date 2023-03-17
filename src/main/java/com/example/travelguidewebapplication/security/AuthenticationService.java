@@ -1,6 +1,8 @@
 package com.example.travelguidewebapplication.security;
 
-import com.example.travelguidewebapplication.exception.NotUniqeUser;
+import com.example.travelguidewebapplication.exception.NotFoundUser;
+import com.example.travelguidewebapplication.exception.NotUniqueUser;
+import com.example.travelguidewebapplication.exception.WrongPassword;
 import com.example.travelguidewebapplication.model.User;
 import com.example.travelguidewebapplication.repository.UserRespository;
 import lombok.RequiredArgsConstructor;
@@ -8,8 +10,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -21,13 +21,9 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     public AuthenticationResponse register(RegisterRequest request) {
-        List<User> users = repository.findAll();
-
-        for(User user:users){
-            if(user.getEmail().equalsIgnoreCase(request.getEmail())){
-                throw new NotUniqeUser();
-
-            }
+        if (repository.findAll().stream()
+                .anyMatch(user -> user.getEmail().equalsIgnoreCase(request.getEmail()))) {
+            throw new NotUniqueUser();
         }
         var user = User.builder()
                 .firstname(request.getFirstname())
@@ -41,10 +37,16 @@ public class AuthenticationService {
         saveUserToken(savedUser, jwtToken);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
+                .message("Successfully")
                 .build();
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
+        var userByEmail = repository.findByEmail(request.getEmail())
+                .orElseThrow(NotFoundUser::new);
+        if (!passwordEncoder.matches(request.getPassword(), userByEmail.getPassword())) {
+            throw new WrongPassword();
+        }
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getEmail(),

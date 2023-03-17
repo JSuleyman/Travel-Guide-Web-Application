@@ -11,4 +11,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AuthenticationResponse {
     private String token;
+    private String message;
+
+    public AuthenticationResponse(String meessage) {
+        this.message = meessage;
+    }
+
+//    public AuthenticationResponse(String message){
+//        this.message = message;
+//    }
 }
