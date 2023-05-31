@@ -9,10 +9,4 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRespository userRespository;
-
-//    public UserDetails findUserByEmail(String emil){
-//        List<User> users = userRespository.findAll();
-//
-//        return users.
-//    }
 }

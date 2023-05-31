@@ -60,6 +60,8 @@ public class AuthenticationService {
         saveUserToken(user, jwtToken);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
+                .firstName(user.getFirstname())
+                .lastName(user.getLastname())
                 .build();
     }
 
