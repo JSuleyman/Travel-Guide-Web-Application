@@ -5,7 +5,6 @@ import com.example.travelguidewebapplication.exception.NotUniqueUser;
 import com.example.travelguidewebapplication.exception.WrongPassword;
 import com.example.travelguidewebapplication.model.SessionManager;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +35,7 @@ public class AuthenticationController {
             return ResponseEntity.ok(service.register(request));
         } catch (NotUniqueUser ex) {
             return ResponseEntity.status(HttpStatus.FOUND)
-                    .body(new AuthenticationResponse(null, "This email is already",null,null));
+                    .body(new AuthenticationResponse(null, "This email is already", null, null));
         }
     }
 
@@ -47,10 +46,10 @@ public class AuthenticationController {
             return ResponseEntity.ok(service.authenticate(request));
         } catch (WrongPassword ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new AuthenticationResponse(null, "Wrong password",null,null));
+                    .body(new AuthenticationResponse(null, "Wrong password", null, null));
         } catch (NotFoundUser ex) {
             return ResponseEntity.status(HttpStatus.FOUND)
-                    .body(new AuthenticationResponse(null, "No such e-mail address was found",null,null));
+                    .body(new AuthenticationResponse(null, "No such e-mail address was found", null, null));
         }
     }
 

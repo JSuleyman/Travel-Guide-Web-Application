@@ -1,5 +1,6 @@
 package com.example.travelguidewebapplication.repository;
 
+import com.example.travelguidewebapplication.enums.Status;
 import com.example.travelguidewebapplication.model.PlacesToVisit;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -11,6 +12,10 @@ import java.util.List;
 @Repository
 public interface PlacesToVisitRepository extends JpaRepository<PlacesToVisit, Long> {
 
-    @Query("SELECT p FROM PlacesToVisit p INNER JOIN p.keyId k WHERE k.key = :key")
-    List<PlacesToVisit> findByTravelPlaceKeyValue(@Param("key") String key);
+    @Query("SELECT p FROM PlacesToVisit p INNER JOIN p.keyId k WHERE k.key = :key AND p.status <> :status")
+    List<PlacesToVisit> findByTravelPlaceKeyValue(@Param("key") String key, @Param("status") Status status);
+
+    @Query("SELECT p FROM PlacesToVisit p WHERE p.createdBy= :userId")
+    List<PlacesToVisit> createdByUserList(@Param("userId") Integer id);
+
 }

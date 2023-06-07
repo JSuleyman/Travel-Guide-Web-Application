@@ -3,12 +3,11 @@ package com.example.travelguidewebapplication.service.impl;
 import com.example.travelguidewebapplication.DTO.LikeBtnDTO;
 import com.example.travelguidewebapplication.model.LikeBtn;
 import com.example.travelguidewebapplication.model.PlacesToVisit;
-import com.example.travelguidewebapplication.model.SessionManager;
 import com.example.travelguidewebapplication.model.User;
 import com.example.travelguidewebapplication.repository.LikeBtnRepository;
 import com.example.travelguidewebapplication.repository.PlacesToVisitRepository;
-import com.example.travelguidewebapplication.repository.UserRespository;
 import com.example.travelguidewebapplication.service.inter.LikeBtnService;
+import com.example.travelguidewebapplication.service.inter.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +19,20 @@ import java.util.NoSuchElementException;
 public class LikeBtnServiceImpl implements LikeBtnService {
     private final LikeBtnRepository likeBtnRepository;
     private final PlacesToVisitRepository placesToVisitRepository;
-    private final UserRespository userRespository;
-    private final SessionManager sessionManager;
+    private final UserService userService;
+
+    @Override
+    public boolean isLike(Long id) {
+        try {
+            User user = userService.getUserByUserName();
+            Integer userId = user.getId();
+            LikeBtn likeBtn = likeBtnRepository.findByPlacesId_IdAndUserId_Id(id, userId);
+            return likeBtn.isLike();
+        } catch (Exception e) {
+
+        }
+        return false;
+    }
 
     @Override
     public Long add(LikeBtnDTO likeBtnDTO) {
@@ -29,8 +40,7 @@ public class LikeBtnServiceImpl implements LikeBtnService {
         if (isLike(likeBtnDTO.getId())) {
 
         } else {
-            User user = userRespository.findByEmail(sessionManager.getUserName()).orElseThrow();
-
+            User user = userService.getUserByUserName();
             Long count = places.getLikeCount() + 1;
             places.setLikeCount(count);
             placesToVisitRepository.save(places);
@@ -46,24 +56,11 @@ public class LikeBtnServiceImpl implements LikeBtnService {
     }
 
     @Override
-    public boolean isLike(Long id) {
-        try {
-            User user = userRespository.findByEmail(sessionManager.getUserName()).orElseThrow();
-            Integer userId = user.getId();
-            LikeBtn likeBtn = likeBtnRepository.findByPlacesId_IdAndUserId_Id(id, userId);
-            return likeBtn.isLike();
-        } catch (Exception e) {
-
-        }
-        return false;
-    }
-
-    @Override
     public Long delete(LikeBtnDTO likeBtnDTO) {
         PlacesToVisit places = placesToVisitRepository.findById(likeBtnDTO.getId()).orElseThrow(() -> new NoSuchElementException("Place not found"));
 
         if (isLike(likeBtnDTO.getId())) {
-            User user = userRespository.findByEmail(sessionManager.getUserName()).orElseThrow(() -> new NoSuchElementException("User not found"));
+            User user = userService.getUserByUserName();
             Long count = places.getLikeCount() - 1;
             places.setLikeCount(count);
             placesToVisitRepository.save(places);

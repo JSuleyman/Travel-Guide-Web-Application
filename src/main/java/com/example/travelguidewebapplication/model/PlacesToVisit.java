@@ -1,5 +1,6 @@
 package com.example.travelguidewebapplication.model;
 
+import com.example.travelguidewebapplication.enums.Status;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -15,6 +16,10 @@ public class PlacesToVisit {
     @Id
     @GeneratedValue
     Long id;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "card_status")
+    Status status;
 
     String places;
 
