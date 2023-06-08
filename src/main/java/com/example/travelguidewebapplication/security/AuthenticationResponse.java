@@ -12,6 +12,8 @@ import lombok.NoArgsConstructor;
 public class AuthenticationResponse {
     private String token;
     private String message;
+    private String firstName;
+    private String lastName;
 
     public AuthenticationResponse(String meessage) {
         this.message = meessage;

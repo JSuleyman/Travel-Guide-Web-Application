@@ -3,6 +3,7 @@ package com.example.travelguidewebapplication.security;
 import com.example.travelguidewebapplication.exception.NotFoundUser;
 import com.example.travelguidewebapplication.exception.NotUniqueUser;
 import com.example.travelguidewebapplication.exception.WrongPassword;
+import com.example.travelguidewebapplication.model.SessionManager;
 import com.example.travelguidewebapplication.model.User;
 import com.example.travelguidewebapplication.repository.UserRespository;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final SessionManager sessionManager;
 
     public AuthenticationResponse register(RegisterRequest request) {
         if (repository.findAll().stream()
@@ -33,15 +35,16 @@ public class AuthenticationService {
                 .role(Role.USER)
                 .build();
         var savedUser = repository.save(user);
-        var jwtToken = jwtService.generateToken(user);
-        saveUserToken(savedUser, jwtToken);
+//        var jwtToken = jwtService.generateToken(user);
+//        saveUserToken(savedUser, jwtToken);
         return AuthenticationResponse.builder()
-                .token(jwtToken)
+                .token(null)
                 .message("Successfully")
                 .build();
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
+        sessionManager.setUserName(request.getEmail());
         var userByEmail = repository.findByEmail(request.getEmail())
                 .orElseThrow(NotFoundUser::new);
         if (!passwordEncoder.matches(request.getPassword(), userByEmail.getPassword())) {
@@ -60,6 +63,8 @@ public class AuthenticationService {
         saveUserToken(user, jwtToken);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
+                .firstName(user.getFirstname())
+                .lastName(user.getLastname())
                 .build();
     }
 

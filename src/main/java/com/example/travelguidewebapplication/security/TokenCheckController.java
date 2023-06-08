@@ -23,13 +23,13 @@ public class TokenCheckController {
             Token t = optionalToken.get();
             if (t.isExpired() || t.isRevoked()) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                        .body(new AuthenticationResponse(null, "Token is expired or revoked"));
+                        .body(new AuthenticationResponse(null,"Token is expired or revoked",null, null));
             } else {
                 return ResponseEntity.ok(new AuthenticationResponse("Token is valid"));
             }
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(new AuthenticationResponse(null, "Invalid token"));
+                    .body(new AuthenticationResponse(null, "Invalid token",null,null));
         }
     }
 }

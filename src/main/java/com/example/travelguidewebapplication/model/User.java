@@ -6,10 +6,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -49,6 +46,14 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy = "user")
     private List<Token> tokens;
+
+    @Getter(AccessLevel.NONE)
+    @OneToMany(mappedBy = "userId", fetch = FetchType.LAZY)
+    private List<StarList> starLists;
+
+    @Getter(AccessLevel.NONE)
+    @OneToMany(mappedBy = "userId", fetch = FetchType.LAZY)
+    private List<StarList> likeList;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

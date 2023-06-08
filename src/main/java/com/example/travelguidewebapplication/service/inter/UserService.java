@@ -1,5 +1,7 @@
 package com.example.travelguidewebapplication.service.inter;
 
-public interface UserService {
+import com.example.travelguidewebapplication.model.User;
 
+public interface UserService {
+    User getUserByUserName();
 }
