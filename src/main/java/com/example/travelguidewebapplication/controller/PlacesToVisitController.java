@@ -1,5 +1,6 @@
 package com.example.travelguidewebapplication.controller;
 
+import com.example.travelguidewebapplication.DTO.PlacesToVisitStatusCountRequestDTO;
 import com.example.travelguidewebapplication.DTO.UserCustomCardRequestDTO;
 import com.example.travelguidewebapplication.model.PlacesToVisit;
 import com.example.travelguidewebapplication.service.inter.PlacesToVisitService;
@@ -28,5 +29,10 @@ public class PlacesToVisitController {
     @GetMapping("created_by_user_list")
     public ResponseEntity<List<PlacesToVisit>> createdByUserList(@RequestParam(value = "status", required = false) String status) {
         return ResponseEntity.ok(placesToVisitService.createdByUserList(status));
+    }
+
+    @GetMapping("created_by_user_list_count")
+    public ResponseEntity<PlacesToVisitStatusCountRequestDTO> createdByUserListCount() {
+        return ResponseEntity.ok(placesToVisitService.statusCount());
     }
 }

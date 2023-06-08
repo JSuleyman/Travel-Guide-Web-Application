@@ -1,5 +1,6 @@
 package com.example.travelguidewebapplication.service.impl;
 
+import com.example.travelguidewebapplication.DTO.PlacesToVisitStatusCountRequestDTO;
 import com.example.travelguidewebapplication.DTO.UserCustomCardRequestDTO;
 import com.example.travelguidewebapplication.enums.Status;
 import com.example.travelguidewebapplication.model.PlacesToVisit;
@@ -10,7 +11,6 @@ import com.example.travelguidewebapplication.repository.TravelPlaceKeyRepository
 import com.example.travelguidewebapplication.service.inter.PlacesToVisitService;
 import com.example.travelguidewebapplication.service.inter.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,7 +26,7 @@ public class PlacesToVisitServiceImpl implements PlacesToVisitService {
 
     @Override
     public List<PlacesToVisit> getByValue(String key) {
-        return placesToVisitRepository.findByTravelPlaceKeyValue(key, Status.GOZLEMEDE);
+        return placesToVisitRepository.findByTravelPlaceKeyValue(key, Status.ICRA_EDILIB);
     }
 
     @Override
@@ -56,5 +56,21 @@ public class PlacesToVisitServiceImpl implements PlacesToVisitService {
                 .status(Status.GOZLEMEDE)
                 .build();
         placesToVisitRepository.save(places);
+    }
+
+    @Override
+    public PlacesToVisitStatusCountRequestDTO statusCount() {
+        User user = userService.getUserByUserName();
+        Integer gozlemede = placesToVisitRepository.createdByUserListStatusCount(user.getId(), Status.GOZLEMEDE);
+        Integer legvEdilib = placesToVisitRepository.createdByUserListStatusCount(user.getId(), Status.LEGV_EDILIB);
+        Integer icraEdilib = placesToVisitRepository.createdByUserListStatusCount(user.getId(), Status.ICRA_EDILIB);
+        Integer allCount = gozlemede + legvEdilib + icraEdilib;
+
+        return PlacesToVisitStatusCountRequestDTO.builder()
+                .gozlemedeCount(gozlemede)
+                .legvEdilibCount(legvEdilib)
+                .icraEdilibCount(icraEdilib)
+                .allCount(allCount)
+                .build();
     }
 }
