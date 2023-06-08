@@ -26,7 +26,6 @@ public class AuthenticationController {
     private final JwtService jwtService;
     private final TokenRepository tokenRepository;
     private final UserDetailsService userDetailsService;
-    private final SessionManager sessionManager;
     private LogoutService logoutService;
 
     @PostMapping("/register")
@@ -42,7 +41,6 @@ public class AuthenticationController {
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request) {
         try {
-            sessionManager.setUserName(request.getEmail());
             return ResponseEntity.ok(service.authenticate(request));
         } catch (WrongPassword ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)

@@ -15,7 +15,8 @@ public interface PlacesToVisitRepository extends JpaRepository<PlacesToVisit, Lo
     @Query("SELECT p FROM PlacesToVisit p INNER JOIN p.keyId k WHERE k.key = :key AND p.status <> :status")
     List<PlacesToVisit> findByTravelPlaceKeyValue(@Param("key") String key, @Param("status") Status status);
 
-    @Query("SELECT p FROM PlacesToVisit p WHERE p.createdBy= :userId")
-    List<PlacesToVisit> createdByUserList(@Param("userId") Integer id);
+    @Query("SELECT p FROM PlacesToVisit p WHERE p.createdBy = :userId" +
+            " AND (:status IS NULL OR p.status = :status)")
+    List<PlacesToVisit> createdByUserList(@Param("userId") Integer id, @Param("status") Status status);
 
 }

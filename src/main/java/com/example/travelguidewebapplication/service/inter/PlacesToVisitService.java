@@ -8,7 +8,7 @@ import java.util.List;
 public interface PlacesToVisitService {
     List<PlacesToVisit> getByValue(String key);
 
-    List<PlacesToVisit> createdByUserList();
+    List<PlacesToVisit> createdByUserList(String status);
 
     void userCustomCard(UserCustomCardRequestDTO userCustomCardRequestDTO);
 }

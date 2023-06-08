@@ -14,4 +14,16 @@ public enum Status {
     public String getValue() {
         return value;
     }
+
+    public static Status fromValue(String value) {
+        if(value == null){
+            return null;
+        }
+        for (Status status : values()) {
+            if (status.name().equalsIgnoreCase(value)) {
+                return status;
+            }
+        }
+        throw new IllegalArgumentException("Geçersiz Status değeri: " + value);
+    }
 }

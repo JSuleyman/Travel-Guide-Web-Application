@@ -3,7 +3,6 @@ package com.example.travelguidewebapplication.controller;
 import com.example.travelguidewebapplication.DTO.UserCustomCardRequestDTO;
 import com.example.travelguidewebapplication.model.PlacesToVisit;
 import com.example.travelguidewebapplication.service.inter.PlacesToVisitService;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +26,7 @@ public class PlacesToVisitController {
     }
 
     @GetMapping("created_by_user_list")
-    public ResponseEntity<List<PlacesToVisit>> createdByUserList() {
-        return ResponseEntity.ok(placesToVisitService.createdByUserList());
+    public ResponseEntity<List<PlacesToVisit>> createdByUserList(@RequestParam(value = "status", required = false) String status) {
+        return ResponseEntity.ok(placesToVisitService.createdByUserList(status));
     }
 }

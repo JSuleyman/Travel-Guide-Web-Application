@@ -10,6 +10,7 @@ import com.example.travelguidewebapplication.repository.TravelPlaceKeyRepository
 import com.example.travelguidewebapplication.service.inter.PlacesToVisitService;
 import com.example.travelguidewebapplication.service.inter.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,10 +30,12 @@ public class PlacesToVisitServiceImpl implements PlacesToVisitService {
     }
 
     @Override
-    public List<PlacesToVisit> createdByUserList() {
+    public List<PlacesToVisit> createdByUserList(String status) {
         User user = userService.getUserByUserName();
         Integer userId = user.getId();
-        return placesToVisitRepository.createdByUserList(userId);
+
+        Status statusEnum = Status.fromValue(status);
+        return placesToVisitRepository.createdByUserList(userId, statusEnum);
     }
 
     @Override
