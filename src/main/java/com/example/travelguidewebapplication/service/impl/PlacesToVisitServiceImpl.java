@@ -4,28 +4,34 @@ import com.example.travelguidewebapplication.DTO.PlacesToVisitStatusCountRequest
 import com.example.travelguidewebapplication.DTO.UserCustomCardRequestDTO;
 import com.example.travelguidewebapplication.enums.Status;
 import com.example.travelguidewebapplication.model.PlacesToVisit;
+import com.example.travelguidewebapplication.model.PlacesToVisitDetails;
 import com.example.travelguidewebapplication.model.TravelPlaceKey;
 import com.example.travelguidewebapplication.model.User;
 import com.example.travelguidewebapplication.repository.PlacesToVisitRepository;
 import com.example.travelguidewebapplication.repository.TravelPlaceKeyRepository;
+import com.example.travelguidewebapplication.service.inter.PlacesToVisitDetailsService;
 import com.example.travelguidewebapplication.service.inter.PlacesToVisitService;
 import com.example.travelguidewebapplication.service.inter.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class PlacesToVisitServiceImpl implements PlacesToVisitService {
 
     private final PlacesToVisitRepository placesToVisitRepository;
     private final TravelPlaceKeyRepository placeKeyRepository;
     private final UserService userService;
+    private final PlacesToVisitDetailsService placesToVisitDetailsService;
 
 
     @Override
     public List<PlacesToVisit> getByValue(String key) {
+//        log.info(key);
         return placesToVisitRepository.findByTravelPlaceKeyValue(key, Status.ICRA_EDILIB);
     }
 
@@ -42,11 +48,11 @@ public class PlacesToVisitServiceImpl implements PlacesToVisitService {
     public void userCustomCard(UserCustomCardRequestDTO customCardRequestDTO) {
         User user = userService.getUserByUserName();
         TravelPlaceKey placeKey = placeKeyRepository.findTravelPlaceKeyByKey(customCardRequestDTO.getKeyId());
+
+
         PlacesToVisit places = PlacesToVisit.builder()
                 .keyId(placeKey)
-                .userComments(customCardRequestDTO.getUserComments())
                 .manyForTravel(customCardRequestDTO.getManyForTravel())
-                .events(customCardRequestDTO.getEvents())
                 .isCreatedByUser(true)
                 .imageUrl(customCardRequestDTO.getImageUrl())
                 .likeCount(0L)
@@ -56,6 +62,13 @@ public class PlacesToVisitServiceImpl implements PlacesToVisitService {
                 .status(Status.GOZLEMEDE)
                 .build();
         placesToVisitRepository.save(places);
+
+        PlacesToVisitDetails placesToVisitDetails = PlacesToVisitDetails.builder()
+                .userComments(customCardRequestDTO.getUserComments())
+                .events(customCardRequestDTO.getEvents())
+                .places(places)
+                .build();
+        placesToVisitDetailsService.save(placesToVisitDetails);
     }
 
     @Override

@@ -1,6 +1,5 @@
 package com.example.travelguidewebapplication.service.impl;
 
-import com.example.travelguidewebapplication.model.ExampleTravel;
 import com.example.travelguidewebapplication.repository.ExampleTravelRepository;
 import com.example.travelguidewebapplication.service.inter.TravelExampleService;
 import lombok.RequiredArgsConstructor;
