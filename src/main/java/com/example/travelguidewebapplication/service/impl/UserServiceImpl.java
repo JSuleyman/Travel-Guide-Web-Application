@@ -1,5 +1,6 @@
 package com.example.travelguidewebapplication.service.impl;
 
+import com.example.travelguidewebapplication.exception.NotFoundUser;
 import com.example.travelguidewebapplication.model.SessionManager;
 import com.example.travelguidewebapplication.model.User;
 import com.example.travelguidewebapplication.repository.UserRespository;
@@ -15,7 +16,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserByUserName() {
-        return userRespository.findByEmail(sessionManager.getUserName()).orElseThrow();
+        return userRespository.findByEmail(sessionManager.getUserName()).stream()
+                .findFirst()
+                .orElseThrow(NotFoundUser::new);
     }
 
 }

@@ -22,7 +22,7 @@ public class LikeBtnServiceImpl implements LikeBtnService {
     private final UserService userService;
 
     @Override
-    public boolean isLike(Long id) {
+    public boolean isLike(String id) {
         try {
             User user = userService.getUserByUserName();
             Integer userId = user.getId();

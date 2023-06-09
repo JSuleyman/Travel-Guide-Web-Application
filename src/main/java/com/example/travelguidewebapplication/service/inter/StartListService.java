@@ -9,7 +9,7 @@ import java.util.List;
 public interface StartListService {
     void add(StarRequestDTO starRequestDTO);
 
-    boolean isFavorite(Long id);
+    boolean isFavorite(String id);
 
     void delete(StarRequestDTO starRequestDTO);
 

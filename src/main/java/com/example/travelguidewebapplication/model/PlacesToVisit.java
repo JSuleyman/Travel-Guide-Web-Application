@@ -14,8 +14,8 @@ import lombok.experimental.FieldDefaults;
 @Builder
 public class PlacesToVisit {
     @Id
-    @GeneratedValue
-    Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    String id;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "card_status")
@@ -28,10 +28,6 @@ public class PlacesToVisit {
     String imageUrl;
 
     Long likeCount;
-
-    String userComments;
-
-    String events;
 
     @Column(nullable = false)
     boolean isCreatedByUser;

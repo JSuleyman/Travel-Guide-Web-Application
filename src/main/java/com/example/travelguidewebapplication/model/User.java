@@ -55,6 +55,11 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "userId", fetch = FetchType.LAZY)
     private List<StarList> likeList;
 
+
+    @Getter(value = AccessLevel.NONE)
+    @OneToMany(mappedBy = "fkUserId", fetch = FetchType.LAZY)
+    List<UserCommentBox> userCommentBoxes;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));

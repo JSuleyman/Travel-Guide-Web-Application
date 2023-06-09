@@ -26,7 +26,7 @@ public class StarListController {
     }
 
     @GetMapping("favorites/check/{rowId}")
-    public ResponseEntity<Boolean> isFavorite(@PathVariable Long rowId) {
+    public ResponseEntity<Boolean> isFavorite(@PathVariable String rowId) {
         return ResponseEntity.ok(service.isFavorite(rowId));
     }
 

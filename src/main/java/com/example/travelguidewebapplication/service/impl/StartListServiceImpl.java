@@ -28,8 +28,7 @@ public class StartListServiceImpl implements StartListService {
     public void add(StarRequestDTO starRequestDTO) {
         User user = userRespository.findByEmail(sessionManager.getUserName()).orElseThrow();
 
-        Long id = starRequestDTO.getId();
-        PlacesToVisit places = placesToVisitRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Tapilmadi"));
+        PlacesToVisit places = placesToVisitRepository.findById(starRequestDTO.getId()).orElseThrow(() -> new NoSuchElementException("Tapilmadi"));
         StarList starList = new StarList();
         starList.setPlacesId(places);
         starList.setFavorite(true);
@@ -38,7 +37,7 @@ public class StartListServiceImpl implements StartListService {
     }
 
     @Override
-    public boolean isFavorite(Long id) {
+    public boolean isFavorite(String id) {
         try {
             User user = userRespository.findByEmail(sessionManager.getUserName()).orElseThrow();
             Integer userId = user.getId();
@@ -53,8 +52,8 @@ public class StartListServiceImpl implements StartListService {
     @Override
     public void delete(StarRequestDTO starRequestDTO) {
         User user = userRespository.findByEmail(sessionManager.getUserName()).orElseThrow(() -> new NoSuchElementException("User not found"));
-        Long id = starRequestDTO.getId();
-        PlacesToVisit places = placesToVisitRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Place not found"));
+
+        PlacesToVisit places = placesToVisitRepository.findById(starRequestDTO.getId()).orElseThrow(() -> new NoSuchElementException("Place not found"));
 
         StarList starList = startListRepository.findByUserIdAndPlacesId(user, places);
         if (starList == null) {
@@ -75,7 +74,7 @@ public class StartListServiceImpl implements StartListService {
     @Override
     public List<PlacesToVisit> getAll() {
         User user = userRespository.findByEmail(sessionManager.getUserName()).orElseThrow();
-        Long id = Long.valueOf(user.getId());
+        String id = String.valueOf(user.getId());
         return startListRepository.findStarForUser(id);
     }
 }

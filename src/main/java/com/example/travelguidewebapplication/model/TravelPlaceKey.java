@@ -14,7 +14,8 @@ import java.util.Collection;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class TravelPlaceKey {
     @Id
-    Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    String id;
 
     String key;
 

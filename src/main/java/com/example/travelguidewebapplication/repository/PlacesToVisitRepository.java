@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface PlacesToVisitRepository extends JpaRepository<PlacesToVisit, Long> {
+public interface PlacesToVisitRepository extends JpaRepository<PlacesToVisit, String> {
 
     @Query("SELECT p FROM PlacesToVisit p INNER JOIN p.keyId k WHERE k.key = :key AND p.status = :status")
     List<PlacesToVisit> findByTravelPlaceKeyValue(@Param("key") String key, @Param("status") Status status);

@@ -11,13 +11,13 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface StartListRepository extends JpaRepository<StarList, Long> {
-    StarList findByPlacesId_Id(Long id);
+public interface StartListRepository extends JpaRepository<StarList, String> {
+    StarList findByPlacesId_Id(String id);
 
-    StarList findByPlacesId_IdAndUserId_Id(Long placesId_id, Integer userId_id);
+    StarList findByPlacesId_IdAndUserId_Id(String placesId_id, Integer userId_id);
 
     StarList findByUserIdAndPlacesId(User user, PlacesToVisit places);
 
     @Query("SELECT p.placesId FROM StarList p INNER JOIN p.userId k WHERE k.id = :userId")
-    List<PlacesToVisit> findStarForUser(@Param("userId") Long id);
+    List<PlacesToVisit> findStarForUser(@Param("userId") String id);
 }
