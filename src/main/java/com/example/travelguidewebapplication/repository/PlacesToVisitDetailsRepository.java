@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PlacesToVisitDetailsRepository extends JpaRepository<PlacesToVisitDetails, Long> {
-    PlacesToVisitDetails findByPlacesId(Long places_id);
+public interface PlacesToVisitDetailsRepository extends JpaRepository<PlacesToVisitDetails, String> {
+    PlacesToVisitDetails findByPlacesId(String places_id);
 }

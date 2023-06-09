@@ -17,7 +17,6 @@ public class PlacesToVisitDetailsController {
 
     @GetMapping
     public ResponseEntity<PlacesToVisitDetails> getDetailsByPlacesId(@RequestParam String placesId) {
-        Long placesIdLong = Long.valueOf(placesId);
-        return ResponseEntity.ok(placesToVisitDetailsService.getDetailsByPlacesId(placesIdLong));
+        return ResponseEntity.ok(placesToVisitDetailsService.getDetailsByPlacesId(placesId));
     }
 }

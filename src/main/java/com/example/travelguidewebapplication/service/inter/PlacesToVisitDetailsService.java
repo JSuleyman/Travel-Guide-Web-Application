@@ -5,7 +5,7 @@ import com.example.travelguidewebapplication.model.PlacesToVisitDetails;
 public interface PlacesToVisitDetailsService {
     void save(PlacesToVisitDetails places);
 
-    PlacesToVisitDetails getDetailsByPlacesId(Long placesId);
+    PlacesToVisitDetails getDetailsByPlacesId(String placesId);
 
-    PlacesToVisitDetails getById(Long id);
+    PlacesToVisitDetails getById(String id);
 }

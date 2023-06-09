@@ -8,7 +8,7 @@ import java.util.List;
 public interface LikeBtnService {
     Long add(LikeBtnDTO likeBtnDTO);
 
-    boolean isLike(Long id);
+    boolean isLike(String id);
 
     Long delete(LikeBtnDTO likeBtnDTO);
 

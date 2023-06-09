@@ -11,22 +11,38 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 public class ExceptionHandlers {
+
     @ExceptionHandler(value = NotUniqueUser.class)
-    public ResponseEntity<Object> userException() {
-        return new ResponseEntity<>("This email is already", HttpStatus.FOUND);
+    public ResponseEntity<ErrorResponse> handleNotUniqueUserException(NotUniqueUser ex) {
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setErrorMessage("This email is already registered.");
+        errorResponse.setStatus(HttpStatus.CONFLICT);
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
     }
 
     @ExceptionHandler(value = WrongPassword.class)
-    public ResponseEntity<Object> passwordException() {
-        return new ResponseEntity<>("Wrong password", HttpStatus.NOT_FOUND);
+    public ResponseEntity<ErrorResponse> handleWrongPasswordException(WrongPassword ex) {
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setErrorMessage("Wrong password.");
+        errorResponse.setStatus(HttpStatus.UNAUTHORIZED);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
     }
+
     @ExceptionHandler(value = NotFoundUser.class)
-    public ResponseEntity<Object> notFoundUser() {
-        return new ResponseEntity<>("No such e-mail address was found", HttpStatus.NOT_FOUND);
+    public ResponseEntity<ErrorResponse> handleNotFoundUserException(NotFoundUser ex) {
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setErrorMessage("No such email address was found.");
+        errorResponse.setStatus(HttpStatus.NOT_FOUND);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 
     @ExceptionHandler(value = EmptyMessageException.class)
-    public ResponseEntity<Object> handleEmptyMessageException() {
-        return new ResponseEntity<>("Mesaj qutusu boş qoyula bilməz!", HttpStatus.BAD_REQUEST);
+    public ResponseEntity<ErrorResponse> handleEmptyMessageException(EmptyMessageException ex) {
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setErrorMessage("Message box cannot be empty.");
+        errorResponse.setStatus(HttpStatus.BAD_REQUEST);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 }
+
+

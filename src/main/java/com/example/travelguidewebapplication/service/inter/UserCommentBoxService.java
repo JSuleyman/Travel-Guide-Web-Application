@@ -8,5 +8,5 @@ import java.util.List;
 public interface UserCommentBoxService {
     void save(UserCommentBoxDTO userCommentBoxDTO);
 
-    List<UserCommentBoxResponseDTO> getUserCommentListByPlacesId(Long id);
+    List<UserCommentBoxResponseDTO> getUserCommentListByPlacesId(String id);
 }

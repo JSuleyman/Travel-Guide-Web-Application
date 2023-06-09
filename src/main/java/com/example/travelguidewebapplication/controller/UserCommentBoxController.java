@@ -22,7 +22,6 @@ public class UserCommentBoxController {
 
     @GetMapping("/details_id")
     public ResponseEntity<List<UserCommentBoxResponseDTO>> getUserCommentListByPlacesId(@RequestParam String fkPlacesId) {
-        Long fkLong = Long.valueOf(fkPlacesId);
-        return ResponseEntity.ok(userCommentBoxService.getUserCommentListByPlacesId(fkLong));
+        return ResponseEntity.ok(userCommentBoxService.getUserCommentListByPlacesId(fkPlacesId));
     }
 }

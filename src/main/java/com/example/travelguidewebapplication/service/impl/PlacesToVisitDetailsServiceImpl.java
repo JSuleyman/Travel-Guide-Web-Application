@@ -18,12 +18,12 @@ public class PlacesToVisitDetailsServiceImpl implements PlacesToVisitDetailsServ
     }
 
     @Override
-    public PlacesToVisitDetails getDetailsByPlacesId(Long placesId) {
+    public PlacesToVisitDetails getDetailsByPlacesId(String placesId) {
        return placesToVisitDetailsRepository.findByPlacesId(placesId);
     }
 
     @Override
-    public PlacesToVisitDetails getById(Long id) {
+    public PlacesToVisitDetails getById(String id) {
         return placesToVisitDetailsRepository.findById(id).orElseThrow();
     }
 }

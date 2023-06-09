@@ -16,5 +16,5 @@ public interface UserCommentBoxRepository extends JpaRepository<UserCommentBox, 
 //            "WHERE p.id = :id")
 //    List<UserCommentBox> getByPlacesId(Long id);
 
-    List<UserCommentBox> findByFkPlacesToVisitDetailsIdPlacesId(Long id);
+    List<UserCommentBox> findByFkPlacesToVisitDetailsIdPlacesId(String id);
 }

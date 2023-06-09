@@ -9,6 +9,6 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserCommentBoxDTO {
-    Long fkDetailsId;
+    String fkDetailsId;
     String userMessage;
 }

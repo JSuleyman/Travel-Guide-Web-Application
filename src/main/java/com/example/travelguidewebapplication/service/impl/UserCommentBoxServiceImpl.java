@@ -43,7 +43,7 @@ public class UserCommentBoxServiceImpl implements UserCommentBoxService {
     }
 
     @Override
-    public List<UserCommentBoxResponseDTO> getUserCommentListByPlacesId(Long id) {
+    public List<UserCommentBoxResponseDTO> getUserCommentListByPlacesId(String id) {
         List<UserCommentBox> userCommentBox = userCommentBoxRepository.findByFkPlacesToVisitDetailsIdPlacesId(id);
 
         List<UserCommentBoxResponseDTO> userCommentBoxResponseDTO = new ArrayList<>();

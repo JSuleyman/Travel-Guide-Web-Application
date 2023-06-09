@@ -5,10 +5,10 @@ import com.example.travelguidewebapplication.model.PlacesToVisit;
 import com.example.travelguidewebapplication.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface LikeBtnRepository extends JpaRepository<LikeBtn, Long> {
-    LikeBtn findByPlacesId_Id(Long id);
+public interface LikeBtnRepository extends JpaRepository<LikeBtn, String> {
+    LikeBtn findByPlacesId_Id(String id);
 
-    LikeBtn findByPlacesId_IdAndUserId_Id(Long placesId_id, Integer userId_id);
+    LikeBtn findByPlacesId_IdAndUserId_Id(String placesId_id, Integer userId_id);
 
     LikeBtn findByUserIdAndPlacesId(User user, PlacesToVisit places);
 

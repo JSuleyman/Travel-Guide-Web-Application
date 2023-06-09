@@ -19,7 +19,7 @@ public class LikeBtnController {
     }
 
     @GetMapping("/check/{rowId}")
-    public ResponseEntity<Boolean> isLike(@PathVariable Long rowId) {
+    public ResponseEntity<Boolean> isLike(@PathVariable String rowId) {
         return ResponseEntity.ok(service.isLike(rowId));
     }
 
