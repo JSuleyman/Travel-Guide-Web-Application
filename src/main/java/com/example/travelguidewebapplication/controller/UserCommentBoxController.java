@@ -24,4 +24,9 @@ public class UserCommentBoxController {
     public ResponseEntity<List<UserCommentBoxResponseDTO>> getUserCommentListByPlacesId(@RequestParam String fkPlacesId) {
         return ResponseEntity.ok(userCommentBoxService.getUserCommentListByPlacesId(fkPlacesId));
     }
+
+    @GetMapping("/current_user_id")
+    public ResponseEntity<Integer> getCurrenctUserId(){
+        return ResponseEntity.ok(userCommentBoxService.currentUserId());
+    }
 }

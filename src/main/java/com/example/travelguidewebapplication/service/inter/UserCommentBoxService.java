@@ -9,4 +9,6 @@ public interface UserCommentBoxService {
     void save(UserCommentBoxDTO userCommentBoxDTO);
 
     List<UserCommentBoxResponseDTO> getUserCommentListByPlacesId(String id);
+
+    Integer currentUserId();
 }

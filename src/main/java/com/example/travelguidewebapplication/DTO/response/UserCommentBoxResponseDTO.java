@@ -15,4 +15,5 @@ public class UserCommentBoxResponseDTO {
     String lastName;
     String userMessage;
     LocalDateTime dateAndTime;
+    Integer userId;
 }

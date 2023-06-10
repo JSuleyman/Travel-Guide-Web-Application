@@ -2,6 +2,7 @@ package com.example.travelguidewebapplication.service.impl;
 
 import com.example.travelguidewebapplication.DTO.UserCommentBoxDTO;
 import com.example.travelguidewebapplication.DTO.response.UserCommentBoxResponseDTO;
+import com.example.travelguidewebapplication.enums.Status;
 import com.example.travelguidewebapplication.exception.EmptyMessageException;
 import com.example.travelguidewebapplication.model.PlacesToVisitDetails;
 import com.example.travelguidewebapplication.model.User;
@@ -11,6 +12,7 @@ import com.example.travelguidewebapplication.service.inter.PlacesToVisitDetailsS
 import com.example.travelguidewebapplication.service.inter.UserCommentBoxService;
 import com.example.travelguidewebapplication.service.inter.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -19,6 +21,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserCommentBoxServiceImpl implements UserCommentBoxService {
     private final UserCommentBoxRepository userCommentBoxRepository;
     private final UserService userService;
@@ -29,22 +32,26 @@ public class UserCommentBoxServiceImpl implements UserCommentBoxService {
         if (userCommentBoxDTO.getUserMessage().trim().length() == 0) {
             throw new EmptyMessageException();
         } else {
+
             User user = userService.getUserByUserName();
             PlacesToVisitDetails places = placesToVisitDetailsService.getById(userCommentBoxDTO.getFkDetailsId());
-
-            UserCommentBox userCommentBox = UserCommentBox.builder()
-                    .fkUserId(user)
-                    .fkPlacesToVisitDetailsId(places)
-                    .messagesList(userCommentBoxDTO.getUserMessage())
-                    .localDateTime(LocalDateTime.now())
-                    .build();
-            userCommentBoxRepository.save(userCommentBox);
+            if (places.getPlaces().getStatus().equals(Status.ICRA_EDILIB)) {
+                UserCommentBox userCommentBox = UserCommentBox.builder()
+                        .fkUserId(user)
+                        .fkPlacesToVisitDetailsId(places)
+                        .messagesList(userCommentBoxDTO.getUserMessage())
+                        .localDateTime(LocalDateTime.now())
+                        .build();
+                userCommentBoxRepository.save(userCommentBox);
+            } else {
+                log.info("Write error message!");
+            }
         }
     }
 
     @Override
     public List<UserCommentBoxResponseDTO> getUserCommentListByPlacesId(String id) {
-        List<UserCommentBox> userCommentBox = userCommentBoxRepository.findByFkPlacesToVisitDetailsIdPlacesId(id);
+        List<UserCommentBox> userCommentBox = userCommentBoxRepository.findByFkPlacesToVisitDetailsIdPlacesId(id, Status.ICRA_EDILIB);
 
         List<UserCommentBoxResponseDTO> userCommentBoxResponseDTO = new ArrayList<>();
 
@@ -54,10 +61,16 @@ public class UserCommentBoxServiceImpl implements UserCommentBoxService {
                     .firstName(userCommentBox1.getFkUserId().getFirstname())
                     .lastName(userCommentBox1.getFkUserId().getLastname())
                     .dateAndTime(userCommentBox1.getLocalDateTime())
+                    .userId(userCommentBox1.getFkUserId().getId())
                     .build();
             userCommentBoxResponseDTO.add(userCommentBoxResponseDTOIn);
         }
 
         return userCommentBoxResponseDTO;
+    }
+
+    @Override
+    public Integer currentUserId() {
+        return userService.getUserByUserName().getId();
     }
 }
