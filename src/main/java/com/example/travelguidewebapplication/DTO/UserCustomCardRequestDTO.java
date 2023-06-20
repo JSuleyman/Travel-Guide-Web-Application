@@ -4,11 +4,11 @@ import lombok.Data;
 
 @Data
 public class UserCustomCardRequestDTO {
-    String keyId;
+    String categoryId;
 
-    String places;
+    String destinationName;
 
-    Integer manyForTravel;
+    Integer estimatedCost;
 
     String imageUrl;
 

@@ -1,6 +1,6 @@
 package com.example.travelguidewebapplication.repository;
 
-import com.example.travelguidewebapplication.model.PlacesToVisit;
+import com.example.travelguidewebapplication.model.TravelDestination;
 import com.example.travelguidewebapplication.model.StarList;
 import com.example.travelguidewebapplication.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,12 +12,12 @@ import java.util.List;
 
 @Repository
 public interface StartListRepository extends JpaRepository<StarList, String> {
-    StarList findByPlacesId_Id(String id);
+//    StarList findByPlacesId_Id(String id);
 
-    StarList findByPlacesId_IdAndUserId_Id(String placesId_id, Integer userId_id);
+    StarList findByTravelDestination_IdAndUserId_Id(String placesId_id, Integer userId_id);
 
-    StarList findByUserIdAndPlacesId(User user, PlacesToVisit places);
+    StarList findByUserIdAndTravelDestination(User user, TravelDestination places);
 
-    @Query("SELECT p.placesId FROM StarList p INNER JOIN p.userId k WHERE k.id = :userId")
-    List<PlacesToVisit> findStarForUser(@Param("userId") String id);
+    @Query("SELECT p.travelDestination FROM StarList p INNER JOIN p.userId k WHERE k.id = :userId")
+    List<TravelDestination> findStarForUser(@Param("userId") String id);
 }

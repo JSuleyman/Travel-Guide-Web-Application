@@ -21,9 +21,9 @@ public class LikeBtn {
     @Column(name = "is_favorite")
     boolean isLike;
 
-    @JoinColumn(name = "places_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "travel_destination_id", referencedColumnName = "id", nullable = false)
     @OneToOne
-    PlacesToVisit placesId;
+    TravelDestination travelDestination;
 
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     @ManyToOne

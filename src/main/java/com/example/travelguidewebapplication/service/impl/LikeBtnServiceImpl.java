@@ -2,10 +2,10 @@ package com.example.travelguidewebapplication.service.impl;
 
 import com.example.travelguidewebapplication.DTO.LikeBtnDTO;
 import com.example.travelguidewebapplication.model.LikeBtn;
-import com.example.travelguidewebapplication.model.PlacesToVisit;
+import com.example.travelguidewebapplication.model.TravelDestination;
 import com.example.travelguidewebapplication.model.User;
 import com.example.travelguidewebapplication.repository.LikeBtnRepository;
-import com.example.travelguidewebapplication.repository.PlacesToVisitRepository;
+import com.example.travelguidewebapplication.repository.TravelDestinationRepository;
 import com.example.travelguidewebapplication.service.inter.LikeBtnService;
 import com.example.travelguidewebapplication.service.inter.UserService;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ import java.util.NoSuchElementException;
 @RequiredArgsConstructor
 public class LikeBtnServiceImpl implements LikeBtnService {
     private final LikeBtnRepository likeBtnRepository;
-    private final PlacesToVisitRepository placesToVisitRepository;
+    private final TravelDestinationRepository travelDestinationRepository;
     private final UserService userService;
 
     @Override
@@ -26,7 +26,7 @@ public class LikeBtnServiceImpl implements LikeBtnService {
         try {
             User user = userService.getUserByUserName();
             Integer userId = user.getId();
-            LikeBtn likeBtn = likeBtnRepository.findByPlacesId_IdAndUserId_Id(id, userId);
+            LikeBtn likeBtn = likeBtnRepository.findByTravelDestination_IdAndUserId_Id(id, userId);
             return likeBtn.isLike();
         } catch (Exception e) {
 
@@ -36,36 +36,36 @@ public class LikeBtnServiceImpl implements LikeBtnService {
 
     @Override
     public Long add(LikeBtnDTO likeBtnDTO) {
-        PlacesToVisit places = placesToVisitRepository.findById(likeBtnDTO.getId()).orElseThrow(() -> new NoSuchElementException("Tapilmadi"));
+        TravelDestination travelDestination = travelDestinationRepository.findById(likeBtnDTO.getId()).orElseThrow(() -> new NoSuchElementException("Tapilmadi"));
         if (isLike(likeBtnDTO.getId())) {
 
         } else {
             User user = userService.getUserByUserName();
-            Long count = places.getLikeCount() + 1;
-            places.setLikeCount(count);
-            placesToVisitRepository.save(places);
+            Long count = travelDestination.getLikeCount() + 1;
+            travelDestination.setLikeCount(count);
+            travelDestinationRepository.save(travelDestination);
 
             LikeBtn likeBtn = new LikeBtn();
-            likeBtn.setPlacesId(places);
+            likeBtn.setTravelDestination(travelDestination);
             likeBtn.setUserId(user);
             likeBtn.setLike(true);
             likeBtnRepository.save(likeBtn);
-            return places.getLikeCount();
+            return travelDestination.getLikeCount();
         }
-        return places.getLikeCount();
+        return travelDestination.getLikeCount();
     }
 
     @Override
     public Long delete(LikeBtnDTO likeBtnDTO) {
-        PlacesToVisit places = placesToVisitRepository.findById(likeBtnDTO.getId()).orElseThrow(() -> new NoSuchElementException("Place not found"));
+        TravelDestination places = travelDestinationRepository.findById(likeBtnDTO.getId()).orElseThrow(() -> new NoSuchElementException("Place not found"));
 
         if (isLike(likeBtnDTO.getId())) {
             User user = userService.getUserByUserName();
             Long count = places.getLikeCount() - 1;
             places.setLikeCount(count);
-            placesToVisitRepository.save(places);
+            travelDestinationRepository.save(places);
 
-            LikeBtn likeBtn = likeBtnRepository.findByUserIdAndPlacesId(user, places);
+            LikeBtn likeBtn = likeBtnRepository.findByUserIdAndTravelDestination(user, places);
             if (likeBtn == null) {
                 throw new NoSuchElementException("StarList not found");
             }
@@ -76,7 +76,7 @@ public class LikeBtnServiceImpl implements LikeBtnService {
     }
 
     @Override
-    public List<PlacesToVisit> getAll() {
+    public List<TravelDestination> getAll() {
         return null;
     }
 }

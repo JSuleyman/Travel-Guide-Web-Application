@@ -53,12 +53,12 @@ public class User implements UserDetails {
 
     @Getter(AccessLevel.NONE)
     @OneToMany(mappedBy = "userId", fetch = FetchType.LAZY)
-    private List<StarList> likeList;
+    private List<LikeBtn> likeList;
 
 
     @Getter(value = AccessLevel.NONE)
-    @OneToMany(mappedBy = "fkUserId", fetch = FetchType.LAZY)
-    List<UserCommentBox> userCommentBoxes;
+    @OneToMany(mappedBy = "userId", fetch = FetchType.LAZY)
+    List<UserComment> userComments;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
