@@ -1,13 +1,12 @@
 package com.example.travelguidewebapplication.error;
 
-import com.example.travelguidewebapplication.exception.EmptyMessageException;
-import com.example.travelguidewebapplication.exception.NotFoundUser;
-import com.example.travelguidewebapplication.exception.NotUniqueUser;
-import com.example.travelguidewebapplication.exception.WrongPassword;
+import com.example.travelguidewebapplication.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import java.util.List;
 
 @ControllerAdvice
 public class ExceptionHandlers {
@@ -41,6 +40,18 @@ public class ExceptionHandlers {
         ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setErrorMessage("Message box cannot be empty.");
         errorResponse.setStatus(HttpStatus.BAD_REQUEST);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+    }
+
+    @ExceptionHandler(value = MandatoryException.class)
+    public ResponseEntity<ErrorResponse> handleMandatoryMessageException(MandatoryException ex) {
+        List<String> missingFields = ex.getMissingFields();
+        String errorMessage = String.format("%s %s mandatory.", String.join(", ", missingFields), missingFields.size() > 1 ? "are" : "is");
+
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setErrorMessage(errorMessage);
+        errorResponse.setStatus(HttpStatus.BAD_REQUEST);
+
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 }

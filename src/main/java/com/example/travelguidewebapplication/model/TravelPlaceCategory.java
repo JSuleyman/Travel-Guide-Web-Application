@@ -8,20 +8,20 @@ import java.util.Collection;
 
 @Entity
 @Data
-@Table(name = "travel_place_key")
+@Table(name = "travel_place_category")
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class TravelPlaceKey {
+public class TravelPlaceCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
 
-    String key;
+    String category;
 
-    String value;
+    String description;
 
     @Getter(AccessLevel.NONE)
-    @OneToMany(mappedBy = "keyId", fetch = FetchType.LAZY)
-    Collection<PlacesToVisit> placesToVisits;
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
+    Collection<TravelDestination> travelDestinations;
 }

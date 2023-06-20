@@ -1,9 +1,8 @@
 package com.example.travelguidewebapplication.controller;
 
 import com.example.travelguidewebapplication.DTO.StarRequestDTO;
-import com.example.travelguidewebapplication.model.PlacesToVisit;
+import com.example.travelguidewebapplication.model.TravelDestination;
 import com.example.travelguidewebapplication.model.SessionManager;
-import com.example.travelguidewebapplication.model.StarList;
 import com.example.travelguidewebapplication.service.inter.StartListService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -47,7 +46,7 @@ public class StarListController {
     }
 
     @GetMapping("/getAll")
-    public ResponseEntity<List<PlacesToVisit>> getAll() {
+    public ResponseEntity<List<TravelDestination>> getAll() {
         return ResponseEntity.ok(service.getAll());
     }
 }

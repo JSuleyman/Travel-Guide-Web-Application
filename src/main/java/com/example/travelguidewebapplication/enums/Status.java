@@ -1,9 +1,9 @@
 package com.example.travelguidewebapplication.enums;
 
 public enum Status {
-    ICRA_EDILIB("İCRA EDİLİB"),
-    GOZLEMEDE("GÖZLƏMƏDƏ"),
-    LEGV_EDILIB("LƏĞV EDİLİB");
+    COMPLETED("İCRA EDİLİB"),
+    PENDING("GÖZLƏMƏDƏ"),
+    APPROVED("LƏĞV EDİLİB");
 
     private final String value;
 

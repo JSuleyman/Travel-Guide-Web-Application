@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserCommentBoxResponseDTO {
+    String id;
     String firstName;
     String lastName;
     String userMessage;

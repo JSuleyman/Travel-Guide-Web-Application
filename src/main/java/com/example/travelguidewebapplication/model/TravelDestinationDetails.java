@@ -8,25 +8,25 @@ import java.util.List;
 
 @Entity
 @Data
-@Table(name = "places_to_visit_details")
+@Table(name = "travel_destination_details")
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
-public class PlacesToVisitDetails {
+public class TravelDestinationDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
 
-    String userComments;
+    String travelDestinationDescription;
 
     String events;
 
     @OneToOne
-    @JoinColumn(name = "fk_places_to_visit_id", referencedColumnName = "id", nullable = false)
-    PlacesToVisit places;
+    @JoinColumn(name = "travel_destination_id", referencedColumnName = "id", nullable = false)
+    TravelDestination travelDestination;
 
     @Getter(value = AccessLevel.NONE)
-    @OneToMany(mappedBy = "fkPlacesToVisitDetailsId", fetch = FetchType.LAZY)
-    List<UserCommentBox> userCommentBoxes;
+    @OneToMany(mappedBy = "travelDestinationDetailsId", fetch = FetchType.LAZY)
+    List<UserComment> userComments;
 }
