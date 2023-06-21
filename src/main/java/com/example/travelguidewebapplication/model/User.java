@@ -44,6 +44,7 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @Getter(AccessLevel.NONE)
     @OneToMany(mappedBy = "user")
     private List<Token> tokens;
 
@@ -56,7 +57,7 @@ public class User implements UserDetails {
     private List<LikeBtn> likeList;
 
 
-    @Getter(value = AccessLevel.NONE)
+    @Getter(AccessLevel.NONE)
     @OneToMany(mappedBy = "userId", fetch = FetchType.LAZY)
     List<UserComment> userComments;
 

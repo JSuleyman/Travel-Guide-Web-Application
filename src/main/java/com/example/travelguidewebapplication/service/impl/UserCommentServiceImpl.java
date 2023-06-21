@@ -33,7 +33,7 @@ public class UserCommentServiceImpl implements UserCommentService {
             throw new EmptyMessageException();
         } else {
 
-            User user = userService.getUserByUserName();
+            User user = userService.getCurrentUser();
             TravelDestinationDetails travelDestinationDetails = travelDestinationDetailsService.getById(userCommentDTO.getTravelDestinationDetailsId());
             if (travelDestinationDetails.getTravelDestination().getStatus().equals(Status.COMPLETED)) {
                 UserComment userComment = UserComment.builder()
@@ -72,6 +72,6 @@ public class UserCommentServiceImpl implements UserCommentService {
 
     @Override
     public Integer currentUserId() {
-        return userService.getUserByUserName().getId();
+        return userService.getCurrentUser().getId();
     }
 }

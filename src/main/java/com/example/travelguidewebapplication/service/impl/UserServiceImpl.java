@@ -15,7 +15,7 @@ public class UserServiceImpl implements UserService {
     private final SessionManager sessionManager;
 
     @Override
-    public User getUserByUserName() {
+    public User getCurrentUser() {
         return userRespository.findByEmail(sessionManager.getUserName()).stream()
                 .findFirst()
                 .orElseThrow(NotFoundUser::new);
