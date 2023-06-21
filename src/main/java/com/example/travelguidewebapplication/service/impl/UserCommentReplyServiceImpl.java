@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -27,5 +28,10 @@ public class UserCommentReplyServiceImpl implements UserCommentReplyService {
                 .localDateTime(LocalDateTime.now())
                 .build();
         userCommentReplyRepository.save(userCommentReply);
+    }
+
+    @Override
+    public List<UserCommentReply> findByCommentId(String commentId) {
+        return userCommentReplyRepository.findByUserCommentIdId(commentId);
     }
 }

@@ -12,7 +12,7 @@ public interface TravelDestinationService {
 
     List<UserCreatedListResponseDTO> createdByUserList(String status);
 
-    String userCustomCard(UserCustomCardRequestDTO userCustomCardRequestDTO) throws IllegalAccessException;
+    String createUserCustomCard(UserCustomCardRequestDTO userCustomCardRequestDTO) throws IllegalAccessException;
 
     TravelDestinationStatusCountRequestDTO statusCount();
 

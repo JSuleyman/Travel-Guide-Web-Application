@@ -23,60 +23,75 @@ public class LikeBtnServiceImpl implements LikeBtnService {
 
     @Override
     public boolean isLike(String id) {
-        try {
-            User user = userService.getUserByUserName();
-            Integer userId = user.getId();
-            LikeBtn likeBtn = likeBtnRepository.findByTravelDestination_IdAndUserId_Id(id, userId);
-            return likeBtn.isLike();
-        } catch (Exception e) {
-
-        }
-        return false;
+        User user = userService.getCurrentUser();
+        LikeBtn likeBtn = likeBtnRepository.findByTravelDestination_IdAndUserId_Id(id, user.getId());
+        return likeBtn != null && likeBtn.isLike();
     }
 
     @Override
     public Long add(LikeBtnDTO likeBtnDTO) {
-        TravelDestination travelDestination = travelDestinationRepository.findById(likeBtnDTO.getId()).orElseThrow(() -> new NoSuchElementException("Tapilmadi"));
+        TravelDestination travelDestination = getTravelDestinationById(likeBtnDTO.getId());
+
         if (isLike(likeBtnDTO.getId())) {
-
-        } else {
-            User user = userService.getUserByUserName();
-            Long count = travelDestination.getLikeCount() + 1;
-            travelDestination.setLikeCount(count);
-            travelDestinationRepository.save(travelDestination);
-
-            LikeBtn likeBtn = new LikeBtn();
-            likeBtn.setTravelDestination(travelDestination);
-            likeBtn.setUserId(user);
-            likeBtn.setLike(true);
-            likeBtnRepository.save(likeBtn);
-            return travelDestination.getLikeCount();
+            return travelDestination.getLikeCount(); // Already liked
         }
+
+        User user = userService.getCurrentUser();
+        incrementLikeCount(travelDestination);
+        LikeBtn likeBtn = createLikeBtn(travelDestination, user, true);
+        likeBtnRepository.save(likeBtn);
+
         return travelDestination.getLikeCount();
     }
 
     @Override
     public Long delete(LikeBtnDTO likeBtnDTO) {
-        TravelDestination places = travelDestinationRepository.findById(likeBtnDTO.getId()).orElseThrow(() -> new NoSuchElementException("Place not found"));
+        TravelDestination travelDestination = getTravelDestinationById(likeBtnDTO.getId());
 
-        if (isLike(likeBtnDTO.getId())) {
-            User user = userService.getUserByUserName();
-            Long count = places.getLikeCount() - 1;
-            places.setLikeCount(count);
-            travelDestinationRepository.save(places);
-
-            LikeBtn likeBtn = likeBtnRepository.findByUserIdAndTravelDestination(user, places);
-            if (likeBtn == null) {
-                throw new NoSuchElementException("StarList not found");
-            }
-            likeBtnRepository.delete(likeBtn);
-            return places.getLikeCount();
+        if (!isLike(likeBtnDTO.getId())) {
+            return travelDestination.getLikeCount(); // Not liked yet
         }
-        return places.getLikeCount();
+
+        User user = userService.getCurrentUser();
+        decrementLikeCount(travelDestination);
+        LikeBtn likeBtn = getLikeBtnByUserAndTravelDestination(user, travelDestination);
+        likeBtnRepository.delete(likeBtn);
+
+        return travelDestination.getLikeCount();
     }
 
     @Override
     public List<TravelDestination> getAll() {
-        return null;
+        return travelDestinationRepository.findAll();
+    }
+
+
+    private TravelDestination getTravelDestinationById(String id) {
+        return travelDestinationRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("TravelDestination not found"));
+    }
+
+    private void incrementLikeCount(TravelDestination travelDestination) {
+        Long currentCount = travelDestination.getLikeCount();
+        travelDestination.setLikeCount(currentCount + 1);
+        travelDestinationRepository.save(travelDestination);
+    }
+
+    private void decrementLikeCount(TravelDestination travelDestination) {
+        Long currentCount = travelDestination.getLikeCount();
+        travelDestination.setLikeCount(currentCount - 1);
+        travelDestinationRepository.save(travelDestination);
+    }
+
+    private LikeBtn createLikeBtn(TravelDestination travelDestination, User user, boolean isLike) {
+        LikeBtn likeBtn = new LikeBtn();
+        likeBtn.setTravelDestination(travelDestination);
+        likeBtn.setUserId(user);
+        likeBtn.setLike(isLike);
+        return likeBtn;
+    }
+
+    private LikeBtn getLikeBtnByUserAndTravelDestination(User user, TravelDestination travelDestination) {
+        return likeBtnRepository.findByUserIdAndTravelDestination(user, travelDestination);
     }
 }

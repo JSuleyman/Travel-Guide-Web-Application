@@ -26,7 +26,7 @@ public class TravelDestinationController {
 
     @PostMapping
     public ResponseEntity<String> add(@RequestBody UserCustomCardRequestDTO userCustomCardRequestDTO) throws IllegalAccessException {
-        return ResponseEntity.ok(travelDestinationService.userCustomCard(userCustomCardRequestDTO));
+        return ResponseEntity.ok(travelDestinationService.createUserCustomCard(userCustomCardRequestDTO));
     }
 
     @GetMapping("created_by_user_list")
