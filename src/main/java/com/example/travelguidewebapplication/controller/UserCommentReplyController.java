@@ -1,6 +1,7 @@
 package com.example.travelguidewebapplication.controller;
 
 import com.example.travelguidewebapplication.DTO.UserCommentReplyRequestDTO;
+import com.example.travelguidewebapplication.DTO.response.UserCommentReplyResponseDTO;
 import com.example.travelguidewebapplication.model.UserCommentReply;
 import com.example.travelguidewebapplication.service.inter.UserCommentReplyService;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,7 @@ public class UserCommentReplyController {
     }
 
     @GetMapping("/{commentId}")
-    public ResponseEntity<List<UserCommentReply>> findByCommentId(@PathVariable String commentId) {
+    public ResponseEntity<List<UserCommentReplyResponseDTO>> findByCommentId(@PathVariable String commentId) {
         return ResponseEntity.ok(userCommentReplyService.findByCommentId(commentId));
     }
 }

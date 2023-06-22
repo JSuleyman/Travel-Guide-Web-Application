@@ -25,4 +25,8 @@ public class UserCommentReply {
     @ManyToOne
     @JoinColumn(name = "user_comment_id", referencedColumnName = "id", nullable = false)
     UserComment userCommentId;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+    User userId;
 }
