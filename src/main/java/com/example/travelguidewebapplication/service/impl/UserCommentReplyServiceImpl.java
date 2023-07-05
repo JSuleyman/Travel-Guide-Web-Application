@@ -9,6 +9,8 @@ import com.example.travelguidewebapplication.repository.UserCommentRepository;
 import com.example.travelguidewebapplication.service.inter.UserCommentReplyService;
 import com.example.travelguidewebapplication.service.inter.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -35,12 +37,22 @@ public class UserCommentReplyServiceImpl implements UserCommentReplyService {
         userCommentReplyRepository.save(userCommentReply);
     }
 
-    @Override
-    public List<UserCommentReplyResponseDTO> findByCommentId(String commentId) {
-        List<UserCommentReply> userCommentReplies = userCommentReplyRepository.findByUserCommentIdId(commentId);
+    public List<UserCommentReplyResponseDTO> findByCommentId(String commentId, int first, int offset) {
+        Pageable pageable = PageRequest.of(first, offset);
+        List<UserCommentReply> userCommentReplies = userCommentReplyRepository.findByUserCommentIdId(commentId, pageable);
         return userCommentReplies.stream()
                 .map(this::mapToUserCommentReplyListResponseDTO)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Integer getReplyCommentCount(String commentId) {
+        return findByCommentIdForCount(commentId);
+    }
+
+    private Integer findByCommentIdForCount(String commentId) {
+        List<UserCommentReply> userCommentReplies = userCommentReplyRepository.findByUserCommentIdId(commentId);
+        return userCommentReplies.size();
     }
 
     private UserCommentReplyResponseDTO mapToUserCommentReplyListResponseDTO(UserCommentReply userCommentReply) {
