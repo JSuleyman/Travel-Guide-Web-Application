@@ -46,7 +46,7 @@ public class AuthenticationController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(new AuthenticationResponse(null, "Wrong password", null, null));
         } catch (NotFoundUser ex) {
-            return ResponseEntity.status(HttpStatus.FOUND)
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(new AuthenticationResponse(null, "No such e-mail address was found", null, null));
         }
     }
