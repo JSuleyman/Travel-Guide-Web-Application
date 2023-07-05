@@ -10,7 +10,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebConfig implements WebMvcConfigurer {
     private final CustomLogger customLogger;
 
-
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new RequestLoggingInterceptor(customLogger));

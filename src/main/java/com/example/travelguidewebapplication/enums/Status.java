@@ -16,7 +16,7 @@ public enum Status {
     }
 
     public static Status fromValue(String value) {
-        if(value == null){
+        if (value == null) {
             return null;
         }
         for (Status status : values()) {
