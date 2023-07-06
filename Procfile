@@ -1,1 +1,1 @@
-web: java -jar target/java-getting-started-1.0.0-SNAPSHOT.jar
+web: java -jar target/travel-guide-web-application-1.0.0-SNAPSHOT.jar
