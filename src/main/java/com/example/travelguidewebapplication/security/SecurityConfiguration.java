@@ -35,6 +35,8 @@ public class SecurityConfiguration {
                 .permitAll()
                 .requestMatchers("/image/**")
                 .permitAll()
+                .requestMatchers("/test/deploy")
+                .permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
