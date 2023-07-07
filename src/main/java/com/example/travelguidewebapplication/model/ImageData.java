@@ -21,7 +21,7 @@ public class ImageData {
     private String type;
 
     @Lob
-    @Column(name = "image_data")
+    @Column(name = "image_data", length = 100000)
     private byte[] imageData;
 
     @JoinColumn(name = "travel_destination_id", referencedColumnName = "id", nullable = false)
