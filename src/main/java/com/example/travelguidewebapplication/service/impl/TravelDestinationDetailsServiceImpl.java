@@ -39,6 +39,7 @@ public class TravelDestinationDetailsServiceImpl implements TravelDestinationDet
                 .orElseThrow(() -> new RuntimeException("TravelDestinationDetails not found for ID: " + id));
     }
 
+    //Helper methods
 
     private List<String> getImageUrlsByDestinationId(String destinationId) {
         List<ImageData> imageDataList = storageRepository.findByTravelDestinationId_Id(destinationId);
