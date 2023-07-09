@@ -20,7 +20,6 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
-    private final SessionManager sessionManager;
 
     public AuthenticationResponse register(RegisterRequest request) {
         if (repository.findAll().stream()
@@ -44,7 +43,6 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
-        sessionManager.setUserName(request.getEmail());
         var userByEmail = repository.findByEmail(request.getEmail())
                 .orElseThrow(NotFoundUser::new);
         if (!passwordEncoder.matches(request.getPassword(), userByEmail.getPassword())) {
