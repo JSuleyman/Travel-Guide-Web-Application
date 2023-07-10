@@ -17,7 +17,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +34,13 @@ public class UserCommentServiceImpl implements UserCommentService {
         if (userCommentDTO.getUserComment().trim().length() == 0) {
             throw new EmptyMessageException();
         } else {
+            Calendar azerbaijanCalendar = Calendar.getInstance(TimeZone.getTimeZone("Asia/Baku"));
+            int year = azerbaijanCalendar.get(Calendar.YEAR);
+            int month = azerbaijanCalendar.get(Calendar.MONTH) + 1;  // Ay, 0-indeksli olarak döndürüldüğü için +1 ekliyoruz
+            int day = azerbaijanCalendar.get(Calendar.DAY_OF_MONTH);
+            int hour = azerbaijanCalendar.get(Calendar.HOUR_OF_DAY);
+            int minute = azerbaijanCalendar.get(Calendar.MINUTE);
+            int second = azerbaijanCalendar.get(Calendar.SECOND);
 
             User user = userService.getCurrentUser();
             TravelDestinationDetails travelDestinationDetails = travelDestinationDetailsService.getById(userCommentDTO.getTravelDestinationDetailsId());
@@ -40,7 +49,7 @@ public class UserCommentServiceImpl implements UserCommentService {
                         .userId(user)
                         .travelDestinationDetailsId(travelDestinationDetails)
                         .commentList(userCommentDTO.getUserComment())
-                        .localDateTime(LocalDateTime.now())
+                        .localDateTime(LocalDateTime.of(year, month, day, hour, minute, second))
                         .build();
                 userCommentRepository.save(userComment);
             } else {
