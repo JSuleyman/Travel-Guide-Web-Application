@@ -64,7 +64,7 @@ public class UserCommentServiceImpl implements UserCommentService {
                         Notification.builder()
                                 .fkUserId(travelDestinationRepository.findById(travelDestinationDetails.getTravelDestination().getId()).get().getCreatedBy())
                                 .fkUserCommentId(userComment.getId())
-                                .fkTravelDestinationId(travelDestinationDetails.getId())
+                                .fkTravelDestinationId(travelDestinationDetails.getTravelDestination().getId())
                                 .isNewComment(true)
                                 .build());
             } else {

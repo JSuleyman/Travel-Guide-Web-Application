@@ -1,5 +1,6 @@
 package com.example.travelguidewebapplication.controller;
 
+import com.example.travelguidewebapplication.DTO.response.NotificationResponseDTO;
 import com.example.travelguidewebapplication.model.Notification;
 import com.example.travelguidewebapplication.service.inter.NotificationService;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,7 @@ public class NotificationController {
     private final NotificationService notificationService;
 
     @GetMapping
-    public ResponseEntity<List<Notification>> testNotification() {
+    public ResponseEntity<List<NotificationResponseDTO>> testNotification() {
         return ResponseEntity.ok(notificationService.newCommentNotification());
     }
 }
