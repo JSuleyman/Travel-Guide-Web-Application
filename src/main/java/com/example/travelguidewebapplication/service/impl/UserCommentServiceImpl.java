@@ -8,6 +8,7 @@ import com.example.travelguidewebapplication.model.Notification;
 import com.example.travelguidewebapplication.model.TravelDestinationDetails;
 import com.example.travelguidewebapplication.model.User;
 import com.example.travelguidewebapplication.model.UserComment;
+import com.example.travelguidewebapplication.repository.TravelDestinationRepository;
 import com.example.travelguidewebapplication.repository.UserCommentRepository;
 import com.example.travelguidewebapplication.service.inter.NotificationService;
 import com.example.travelguidewebapplication.service.inter.TravelDestinationDetailsService;
@@ -31,6 +32,7 @@ public class UserCommentServiceImpl implements UserCommentService {
     private final UserService userService;
     private final TravelDestinationDetailsService travelDestinationDetailsService;
     private final NotificationService notificationService;
+    private final TravelDestinationRepository travelDestinationRepository;
 
     @Override
     public void save(UserCommentDTO userCommentDTO) {
@@ -57,9 +59,10 @@ public class UserCommentServiceImpl implements UserCommentService {
                 userCommentRepository.save(userComment);
 
                 //bug olacag user ozu ozune yorum yazanda bura insert getmemelidi
+
                 notificationService.save(
                         Notification.builder()
-                                .fkUserId(user.getId())
+                                .fkUserId(travelDestinationRepository.findById(travelDestinationDetails.getTravelDestination().getId()).get().getCreatedBy())
                                 .fkUserCommentId(userComment.getId())
                                 .fkTravelDestinationId(travelDestinationDetails.getId())
                                 .isNewComment(true)
