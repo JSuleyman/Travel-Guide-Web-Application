@@ -4,10 +4,12 @@ import com.example.travelguidewebapplication.DTO.UserCommentDTO;
 import com.example.travelguidewebapplication.DTO.response.UserCommentBoxResponseDTO;
 import com.example.travelguidewebapplication.enums.Status;
 import com.example.travelguidewebapplication.exception.EmptyMessageException;
+import com.example.travelguidewebapplication.model.Notification;
 import com.example.travelguidewebapplication.model.TravelDestinationDetails;
 import com.example.travelguidewebapplication.model.User;
 import com.example.travelguidewebapplication.model.UserComment;
 import com.example.travelguidewebapplication.repository.UserCommentRepository;
+import com.example.travelguidewebapplication.service.inter.NotificationService;
 import com.example.travelguidewebapplication.service.inter.TravelDestinationDetailsService;
 import com.example.travelguidewebapplication.service.inter.UserCommentService;
 import com.example.travelguidewebapplication.service.inter.UserService;
@@ -28,6 +30,7 @@ public class UserCommentServiceImpl implements UserCommentService {
     private final UserCommentRepository userCommentRepository;
     private final UserService userService;
     private final TravelDestinationDetailsService travelDestinationDetailsService;
+    private final NotificationService notificationService;
 
     @Override
     public void save(UserCommentDTO userCommentDTO) {
@@ -52,6 +55,15 @@ public class UserCommentServiceImpl implements UserCommentService {
                         .localDateTime(LocalDateTime.of(year, month, day, hour, minute, second))
                         .build();
                 userCommentRepository.save(userComment);
+
+                //bug olacag user ozu ozune yorum yazanda bura insert getmemelidi
+                notificationService.save(
+                        Notification.builder()
+                                .fkUserId(user.getId())
+                                .fkUserCommentId(userComment.getId())
+                                .fkTravelDestinationId(travelDestinationDetails.getId())
+                                .isNewComment(true)
+                                .build());
             } else {
                 log.info("Write error message!");
             }
