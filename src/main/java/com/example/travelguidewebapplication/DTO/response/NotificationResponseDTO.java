@@ -10,4 +10,6 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 public class NotificationResponseDTO {
     String destinationName;
+
+    String comment;
 }

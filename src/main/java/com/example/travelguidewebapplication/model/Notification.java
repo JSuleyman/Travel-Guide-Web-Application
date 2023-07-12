@@ -22,5 +22,7 @@ public class Notification {
 
     String fkUserCommentId;
 
+    String comment;
+
     boolean isNewComment;
 }

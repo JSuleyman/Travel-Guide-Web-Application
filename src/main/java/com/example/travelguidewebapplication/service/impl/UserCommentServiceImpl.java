@@ -66,6 +66,7 @@ public class UserCommentServiceImpl implements UserCommentService {
                                 .fkUserCommentId(userComment.getId())
                                 .fkTravelDestinationId(travelDestinationDetails.getTravelDestination().getId())
                                 .isNewComment(true)
+                                .comment(userComment.getCommentList())
                                 .build());
             } else {
                 log.info("Write error message!");

@@ -2,6 +2,7 @@ package com.example.travelguidewebapplication.service.impl;
 
 import com.example.travelguidewebapplication.DTO.response.NotificationResponseDTO;
 import com.example.travelguidewebapplication.model.Notification;
+import com.example.travelguidewebapplication.model.TravelDestination;
 import com.example.travelguidewebapplication.model.User;
 import com.example.travelguidewebapplication.repository.NotificationRepository;
 import com.example.travelguidewebapplication.repository.TravelDestinationRepository;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -31,9 +33,12 @@ public class NotificationServiceImpl implements NotificationService {
         List<Notification> notifications = notificationRepository.findByFkUserId(user.getId());
         List<NotificationResponseDTO> notificationResponseDTOS = new ArrayList<>();
         for (Notification notification : notifications) {
-            notificationResponseDTOS.add(NotificationResponseDTO.builder()
-                    .destinationName(travelDestinationRepository.findById(notification.getFkTravelDestinationId()).get().getDestinationName())
-                    .build());
+            Optional<TravelDestination> travelDestination = travelDestinationRepository.findById(notification.getFkTravelDestinationId());
+            travelDestination.ifPresent(destination -> notificationResponseDTOS.add(NotificationResponseDTO.builder()
+                    .destinationName(destination.getDestinationName())
+                    .comment(notification.getComment())
+                    .build()));
+
         }
         return notificationResponseDTOS;
     }
