@@ -6,6 +6,7 @@ import com.example.travelguidewebapplication.model.TravelDestination;
 import com.example.travelguidewebapplication.model.User;
 import com.example.travelguidewebapplication.repository.NotificationRepository;
 import com.example.travelguidewebapplication.repository.TravelDestinationRepository;
+import com.example.travelguidewebapplication.repository.UserRespository;
 import com.example.travelguidewebapplication.service.inter.NotificationService;
 import com.example.travelguidewebapplication.service.inter.UserService;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ import java.util.Optional;
 public class NotificationServiceImpl implements NotificationService {
     private final NotificationRepository notificationRepository;
     private final UserService userService;
+    private final UserRespository userRespository;
     private final TravelDestinationRepository travelDestinationRepository;
 
     @Override
@@ -33,11 +35,12 @@ public class NotificationServiceImpl implements NotificationService {
         List<Notification> notifications = notificationRepository.findByFkUserId(user.getId());
         List<NotificationResponseDTO> notificationResponseDTOS = new ArrayList<>();
         for (Notification notification : notifications) {
+            User user1 = userRespository.findById(notification.getFkUserId()).orElseThrow();
             Optional<TravelDestination> travelDestination = travelDestinationRepository.findById(notification.getFkTravelDestinationId());
             travelDestination.ifPresent(destination -> notificationResponseDTOS.add(NotificationResponseDTO.builder()
                     .destinationName(destination.getDestinationName())
                     .comment(notification.getComment())
-                    .userFirstNameAndLastName(user.getFirstname() + " " + user.getLastname())
+                    .userFirstNameAndLastName(user1.getFirstname() + " " + user1.getLastname())
                     .build()));
         }
         return notificationResponseDTOS;
