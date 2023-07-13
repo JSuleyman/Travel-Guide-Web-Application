@@ -19,10 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.TimeZone;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -60,13 +57,16 @@ public class UserCommentServiceImpl implements UserCommentService {
 
                 //bug olacag user ozu ozune yorum yazanda bura insert getmemelidi
 
-                notificationService.save(
-                        Notification.builder()
-                                .fkUserId(travelDestinationRepository.findById(travelDestinationDetails.getTravelDestination().getId()).get().getCreatedBy())
-                                .fkUserCommentId(userComment.getId())
-                                .fkTravelDestinationId(travelDestinationDetails.getTravelDestination().getId())
-                                .isNewComment(true)
-                                .build());
+                if (!Objects.equals(user.getId(), travelDestinationRepository.findById(travelDestinationDetails.getTravelDestination().getId()).get().getCreatedBy())) {
+                    notificationService.save(
+                            Notification.builder()
+                                    .fkUserId(travelDestinationRepository.findById(travelDestinationDetails.getTravelDestination().getId()).get().getCreatedBy())
+                                    .fkUserCommentId(userComment.getId())
+                                    .fkTravelDestinationId(travelDestinationDetails.getTravelDestination().getId())
+                                    .isNewComment(true)
+                                    .build());
+                }
+
             } else {
                 log.info("Write error message!");
             }
