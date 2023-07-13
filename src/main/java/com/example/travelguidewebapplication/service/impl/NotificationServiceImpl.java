@@ -37,8 +37,8 @@ public class NotificationServiceImpl implements NotificationService {
             travelDestination.ifPresent(destination -> notificationResponseDTOS.add(NotificationResponseDTO.builder()
                     .destinationName(destination.getDestinationName())
                     .comment(notification.getComment())
+                    .userFirstNameAndLastName(user.getFirstname() + " " + user.getLastname())
                     .build()));
-
         }
         return notificationResponseDTOS;
     }

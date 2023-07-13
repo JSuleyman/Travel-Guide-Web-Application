@@ -12,4 +12,6 @@ public class NotificationResponseDTO {
     String destinationName;
 
     String comment;
+
+    String userFirstNameAndLastName;
 }
