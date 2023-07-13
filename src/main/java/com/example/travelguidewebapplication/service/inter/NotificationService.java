@@ -9,4 +9,6 @@ public interface NotificationService {
     void save(Notification notification);
 
     List<NotificationResponseDTO> newCommentNotification();
+
+    void notificationFalse();
 }

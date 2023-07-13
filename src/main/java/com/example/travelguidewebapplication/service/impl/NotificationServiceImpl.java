@@ -42,4 +42,15 @@ public class NotificationServiceImpl implements NotificationService {
         }
         return notificationResponseDTOS;
     }
+
+    @Override
+    public void notificationFalse() {
+        User user = userService.getCurrentUser();
+        List<Notification> notifications = notificationRepository.findByFkUserId(user.getId());
+
+        for (Notification notification : notifications) {
+            notification.setNewComment(false);
+            notificationRepository.save(notification);
+        }
+    }
 }
