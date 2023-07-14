@@ -40,7 +40,6 @@ public class TravelDestinationDetailsServiceImpl implements TravelDestinationDet
     }
 
     //Helper methods
-
     private List<String> getImageUrlsByDestinationId(String destinationId) {
         List<ImageData> imageDataList = storageRepository.findByTravelDestinationId_Id(destinationId);
         return imageDataList.stream()

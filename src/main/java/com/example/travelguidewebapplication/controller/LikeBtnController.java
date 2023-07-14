@@ -31,9 +31,4 @@ public class LikeBtnController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(service.delete(likeBtnDTO));
         }
     }
-
-//    @GetMapping("/getAll")
-//    public ResponseEntity<List<PlacesToVisit>> getAll() {
-//        return ResponseEntity.ok(service.getAll());
-//    }
 }

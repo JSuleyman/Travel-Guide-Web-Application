@@ -55,8 +55,6 @@ public class UserCommentServiceImpl implements UserCommentService {
                         .build();
                 userCommentRepository.save(userComment);
 
-                //bug olacag user ozu ozune yorum yazanda bura insert getmemelidi
-
                 if (!Objects.equals(user.getId(), travelDestinationRepository.findById(travelDestinationDetails.getTravelDestination().getId()).get().getCreatedBy())) {
                     notificationService.save(
                             Notification.builder()
@@ -66,9 +64,6 @@ public class UserCommentServiceImpl implements UserCommentService {
                                     .isNewComment(true)
                                     .build());
                 }
-
-            } else {
-                log.info("Write error message!");
             }
         }
     }

@@ -32,7 +32,7 @@ public class UserCommentReplyServiceImpl implements UserCommentReplyService {
 
         Calendar azerbaijanCalendar = Calendar.getInstance(TimeZone.getTimeZone("Asia/Baku"));
         int year = azerbaijanCalendar.get(Calendar.YEAR);
-        int month = azerbaijanCalendar.get(Calendar.MONTH) + 1;  // Ay, 0-indeksli olarak döndürüldüğü için +1 ekliyoruz
+        int month = azerbaijanCalendar.get(Calendar.MONTH) + 1;  // Ay, 0-indeksli olduğu üçün +1 olur
         int day = azerbaijanCalendar.get(Calendar.DAY_OF_MONTH);
         int hour = azerbaijanCalendar.get(Calendar.HOUR_OF_DAY);
         int minute = azerbaijanCalendar.get(Calendar.MINUTE);
