@@ -11,7 +11,6 @@ import com.example.travelguidewebapplication.service.inter.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -60,11 +59,8 @@ public class LikeBtnServiceImpl implements LikeBtnService {
         return travelDestination.getLikeCount();
     }
 
-    @Override
-    public List<TravelDestination> getAll() {
-        return travelDestinationRepository.findAll();
-    }
 
+    //Helper Methods
 
     private TravelDestination getTravelDestinationById(String id) {
         return travelDestinationRepository.findById(id)

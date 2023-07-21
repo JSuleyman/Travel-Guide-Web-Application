@@ -12,5 +12,4 @@ public interface LikeBtnService {
 
     Long delete(LikeBtnDTO likeBtnDTO);
 
-    List<TravelDestination> getAll();
 }
