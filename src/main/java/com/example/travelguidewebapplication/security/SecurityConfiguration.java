@@ -37,6 +37,10 @@ public class SecurityConfiguration {
                 .permitAll()
                 .requestMatchers("/test/deploy")
                 .permitAll()
+                .requestMatchers("/swagger-ui/**")
+                .permitAll()
+                .requestMatchers("/v3/api-docs")
+                .permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -52,6 +56,7 @@ public class SecurityConfiguration {
         ;
         return http.build();
     }
+
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
