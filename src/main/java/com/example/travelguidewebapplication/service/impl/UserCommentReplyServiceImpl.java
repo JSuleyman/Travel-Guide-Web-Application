@@ -8,15 +8,13 @@ import com.example.travelguidewebapplication.repository.UserCommentReplyReposito
 import com.example.travelguidewebapplication.repository.UserCommentRepository;
 import com.example.travelguidewebapplication.service.inter.UserCommentReplyService;
 import com.example.travelguidewebapplication.service.inter.UserService;
+import com.example.travelguidewebapplication.util.DateHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.Calendar;
 import java.util.List;
-import java.util.TimeZone;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,18 +28,10 @@ public class UserCommentReplyServiceImpl implements UserCommentReplyService {
     public void add(UserCommentReplyRequestDTO replyRequestDTO) {
         UserComment userComment = userCommentRepository.findById(replyRequestDTO.getCommentId()).orElseThrow();
 
-        Calendar azerbaijanCalendar = Calendar.getInstance(TimeZone.getTimeZone("Asia/Baku"));
-        int year = azerbaijanCalendar.get(Calendar.YEAR);
-        int month = azerbaijanCalendar.get(Calendar.MONTH) + 1;  // Ay, 0-indeksli olduğu üçün +1 olur
-        int day = azerbaijanCalendar.get(Calendar.DAY_OF_MONTH);
-        int hour = azerbaijanCalendar.get(Calendar.HOUR_OF_DAY);
-        int minute = azerbaijanCalendar.get(Calendar.MINUTE);
-        int second = azerbaijanCalendar.get(Calendar.SECOND);
-
         UserCommentReply userCommentReply = UserCommentReply.builder()
                 .userCommentId(userComment)
                 .replyCommentList(replyRequestDTO.getReplyMessage())
-                .localDateTime(LocalDateTime.of(year, month, day, hour, minute, second))
+                .localDateTime(DateHelper.getAzerbaijanDateTime())
                 .userId(userService.getCurrentUser())
                 .build();
         userCommentReplyRepository.save(userCommentReply);
