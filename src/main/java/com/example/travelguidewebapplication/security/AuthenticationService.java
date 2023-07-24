@@ -2,6 +2,7 @@ package com.example.travelguidewebapplication.security;
 
 import com.example.travelguidewebapplication.exception.NotFoundUser;
 import com.example.travelguidewebapplication.exception.NotUniqueUser;
+import com.example.travelguidewebapplication.exception.PasswordMismatchException;
 import com.example.travelguidewebapplication.exception.WrongPassword;
 import com.example.travelguidewebapplication.model.User;
 import com.example.travelguidewebapplication.repository.UserRespository;
@@ -73,7 +74,7 @@ public class AuthenticationService {
             throw new WrongPassword();
         }
         if (!userChangePasswordRequestDTO.getNewPassword().equals(userChangePasswordRequestDTO.getRepeatPassword())) {
-            return "Burda exception elave edilmelidir!";
+            throw new PasswordMismatchException();
         }
         userByEmail.setPassword((passwordEncoder.encode(userChangePasswordRequestDTO.getNewPassword())));
         repository.save(userByEmail);
