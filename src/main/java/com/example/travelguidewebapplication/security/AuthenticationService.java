@@ -3,9 +3,9 @@ package com.example.travelguidewebapplication.security;
 import com.example.travelguidewebapplication.exception.NotFoundUser;
 import com.example.travelguidewebapplication.exception.NotUniqueUser;
 import com.example.travelguidewebapplication.exception.WrongPassword;
-import com.example.travelguidewebapplication.model.SessionManager;
 import com.example.travelguidewebapplication.model.User;
 import com.example.travelguidewebapplication.repository.UserRespository;
+import com.example.travelguidewebapplication.service.inter.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,6 +20,7 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final UserService userService;
 
     public AuthenticationResponse register(RegisterRequest request) {
         if (repository.findAll().stream()
@@ -65,6 +66,22 @@ public class AuthenticationService {
                 .lastName(user.getLastname())
                 .build();
     }
+
+    public String changeUserPassword(UserChangePasswordRequestDTO userChangePasswordRequestDTO) {
+        var userByEmail = userService.getCurrentUser();
+        if (!passwordEncoder.matches(userChangePasswordRequestDTO.getOldPassword(), userByEmail.getPassword())) {
+            throw new WrongPassword();
+        }
+        if (!userChangePasswordRequestDTO.getNewPassword().equals(userChangePasswordRequestDTO.getRepeatPassword())) {
+            return "Burda exception elave edilmelidir!";
+        }
+        userByEmail.setPassword((passwordEncoder.encode(userChangePasswordRequestDTO.getNewPassword())));
+        repository.save(userByEmail);
+
+        return "Parol ugurla deyisdirildi!";
+    }
+
+    //Helper Methods
 
     private void saveUserToken(User user, String jwtToken) {
         var token = Token.builder()

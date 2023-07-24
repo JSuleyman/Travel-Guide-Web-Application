@@ -3,17 +3,13 @@ package com.example.travelguidewebapplication.security;
 import com.example.travelguidewebapplication.exception.NotFoundUser;
 import com.example.travelguidewebapplication.exception.NotUniqueUser;
 import com.example.travelguidewebapplication.exception.WrongPassword;
-import com.example.travelguidewebapplication.model.SessionManager;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
@@ -66,5 +62,11 @@ public class AuthenticationController {
                 SecurityContextHolder.clearContext();
             }
         }
+    }
+
+    @PutMapping("/change_password")
+    public ResponseEntity<String> changePassword(@RequestBody UserChangePasswordRequestDTO userChangePasswordRequestDTO) {
+        service.changeUserPassword(userChangePasswordRequestDTO);
+        return ResponseEntity.ok("Ugurla deyisdirildi");
     }
 }

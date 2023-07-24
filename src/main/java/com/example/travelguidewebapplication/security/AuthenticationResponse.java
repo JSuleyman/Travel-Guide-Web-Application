@@ -18,8 +18,4 @@ public class AuthenticationResponse {
     public AuthenticationResponse(String meessage) {
         this.message = meessage;
     }
-
-//    public AuthenticationResponse(String message){
-//        this.message = message;
-//    }
 }
