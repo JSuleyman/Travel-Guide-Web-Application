@@ -8,7 +8,7 @@ import java.util.List;
 public interface UserCommentService {
     void save(UserCommentDTO userCommentDTO);
 
-    List<UserCommentBoxResponseDTO> getUserCommentListByPlacesId(String id);
+    List<UserCommentBoxResponseDTO> getUserCommentListByPlacesId(String id, int first, int offset);
 
     Integer currentUserId();
 }

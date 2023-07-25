@@ -37,6 +37,7 @@ public class UserCommentReplyServiceImpl implements UserCommentReplyService {
         userCommentReplyRepository.save(userCommentReply);
     }
 
+    @Override
     public List<UserCommentReplyResponseDTO> findByCommentId(String commentId, int first, int offset) {
         Pageable pageable = PageRequest.of(first, offset);
         List<UserCommentReply> userCommentReplies = userCommentReplyRepository.findByUserCommentIdId(commentId, pageable);

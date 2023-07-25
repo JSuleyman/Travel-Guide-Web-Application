@@ -21,12 +21,15 @@ public class UserCommentController {
     }
 
     @GetMapping("/details_id")
-    public ResponseEntity<List<UserCommentBoxResponseDTO>> getUserCommentListByPlacesId(@RequestParam String fkPlacesId) {
-        return ResponseEntity.ok(userCommentService.getUserCommentListByPlacesId(fkPlacesId));
+    public ResponseEntity<List<UserCommentBoxResponseDTO>> getUserCommentListByPlacesId(
+            @RequestParam String fkPlacesId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        return ResponseEntity.ok(userCommentService.getUserCommentListByPlacesId(fkPlacesId, page, size));
     }
 
     @GetMapping("/current_user_id")
-    public ResponseEntity<Integer> getCurrenctUserId(){
+    public ResponseEntity<Integer> getCurrenctUserId() {
         return ResponseEntity.ok(userCommentService.currentUserId());
     }
 }

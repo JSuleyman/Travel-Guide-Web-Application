@@ -17,10 +17,12 @@ import com.example.travelguidewebapplication.service.inter.UserService;
 import com.example.travelguidewebapplication.util.DateHelper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.*;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -32,58 +34,109 @@ public class UserCommentServiceImpl implements UserCommentService {
     private final NotificationService notificationService;
     private final TravelDestinationRepository travelDestinationRepository;
 
+//    @Override
+//    public void save(UserCommentDTO userCommentDTO) {
+//        if (userCommentDTO.getUserComment().trim().length() == 0) {
+//            throw new EmptyMessageException();
+//        } else {
+//            User user = userService.getCurrentUser();
+//            TravelDestinationDetails travelDestinationDetails = travelDestinationDetailsService.getById(userCommentDTO.getTravelDestinationDetailsId());
+//            if (travelDestinationDetails.getTravelDestination().getStatus().equals(Status.COMPLETED)) {
+//                UserComment userComment = UserComment.builder()
+//                        .userId(user)
+//                        .travelDestinationDetailsId(travelDestinationDetails)
+//                        .commentList(userCommentDTO.getUserComment())
+//                        .localDateTime(DateHelper.getAzerbaijanDateTime())
+//                        .build();
+//                userCommentRepository.save(userComment);
+//
+//                if (!Objects.equals(user.getId(), travelDestinationRepository.findById(travelDestinationDetails.getTravelDestination().getId()).get().getCreatedBy())) {
+//                    notificationService.save(
+//                            Notification.builder()
+//                                    .fkUserId(travelDestinationRepository.findById(travelDestinationDetails.getTravelDestination().getId()).get().getCreatedBy())
+//                                    .fkUserCommentId(userComment.getId())
+//                                    .fkTravelDestinationId(travelDestinationDetails.getTravelDestination().getId())
+//                                    .isNewComment(true)
+//                                    .build());
+//                }
+//            }
+//        }
+//    }
+
     @Override
     public void save(UserCommentDTO userCommentDTO) {
-        if (userCommentDTO.getUserComment().trim().length() == 0) {
-            throw new EmptyMessageException();
-        } else {
-            User user = userService.getCurrentUser();
-            TravelDestinationDetails travelDestinationDetails = travelDestinationDetailsService.getById(userCommentDTO.getTravelDestinationDetailsId());
-            if (travelDestinationDetails.getTravelDestination().getStatus().equals(Status.COMPLETED)) {
-                UserComment userComment = UserComment.builder()
-                        .userId(user)
-                        .travelDestinationDetailsId(travelDestinationDetails)
-                        .commentList(userCommentDTO.getUserComment())
-                        .localDateTime(DateHelper.getAzerbaijanDateTime())
-                        .build();
-                userCommentRepository.save(userComment);
+        String trimmedComment = userCommentDTO.getUserComment().trim();
+        validateCommentNotEmpty(trimmedComment);
 
-                if (!Objects.equals(user.getId(), travelDestinationRepository.findById(travelDestinationDetails.getTravelDestination().getId()).get().getCreatedBy())) {
-                    notificationService.save(
-                            Notification.builder()
-                                    .fkUserId(travelDestinationRepository.findById(travelDestinationDetails.getTravelDestination().getId()).get().getCreatedBy())
-                                    .fkUserCommentId(userComment.getId())
-                                    .fkTravelDestinationId(travelDestinationDetails.getTravelDestination().getId())
-                                    .isNewComment(true)
-                                    .build());
-                }
+        User user = userService.getCurrentUser();
+        TravelDestinationDetails travelDestinationDetails = travelDestinationDetailsService.getById(userCommentDTO.getTravelDestinationDetailsId());
+
+        if (isTravelDestinationCompleted(travelDestinationDetails)) {
+            UserComment userComment = createUserComment(user, travelDestinationDetails, trimmedComment);
+
+            Integer createdByUserId = travelDestinationDetails.getTravelDestination().getCreatedBy();
+            if (!user.getId().equals(createdByUserId)) {
+                createNewCommentNotification(createdByUserId, userComment, travelDestinationDetails.getTravelDestination().getId());
             }
         }
     }
 
     @Override
-    public List<UserCommentBoxResponseDTO> getUserCommentListByPlacesId(String id) {
+    public List<UserCommentBoxResponseDTO> getUserCommentListByPlacesId(String id, int first, int offset) {
+        Pageable pageable = PageRequest.of(first, offset);
         List<UserComment> userComments = userCommentRepository.findByFkPlacesToVisitDetailsIdPlacesId(id, Status.COMPLETED);
-
-        List<UserCommentBoxResponseDTO> userCommentBoxResponseDTO = new ArrayList<>();
-
-        for (UserComment userComment1 : userComments) {
-            UserCommentBoxResponseDTO userCommentBoxResponseDTOIn = UserCommentBoxResponseDTO.builder()
-                    .userMessage(userComment1.getCommentList())
-                    .firstName(userComment1.getUserId().getFirstname())
-                    .lastName(userComment1.getUserId().getLastname())
-                    .dateAndTime(userComment1.getLocalDateTime())
-                    .userId(userComment1.getUserId().getId())
-                    .id(userComment1.getId())
-                    .build();
-            userCommentBoxResponseDTO.add(userCommentBoxResponseDTOIn);
-        }
-
-        return userCommentBoxResponseDTO;
+        return userComments.stream()
+                .map(this::mapToUserCommentBoxResponseDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
     public Integer currentUserId() {
         return userService.getCurrentUser().getId();
+    }
+
+    //Helper Methods
+
+    private void validateCommentNotEmpty(String comment) {
+        if (comment.isEmpty()) {
+            throw new EmptyMessageException();
+        }
+    }
+
+    private boolean isTravelDestinationCompleted(TravelDestinationDetails travelDestinationDetails) {
+        return travelDestinationDetails.getTravelDestination().getStatus() == Status.COMPLETED;
+    }
+
+    private UserComment createUserComment(User user, TravelDestinationDetails travelDestinationDetails, String comment) {
+        return userCommentRepository.save(
+                UserComment.builder()
+                        .userId(user)
+                        .travelDestinationDetailsId(travelDestinationDetails)
+                        .commentList(comment)
+                        .localDateTime(DateHelper.getAzerbaijanDateTime())
+                        .build()
+        );
+    }
+
+    private void createNewCommentNotification(Integer userId, UserComment userComment, String travelDestinationId) {
+        notificationService.save(
+                Notification.builder()
+                        .fkUserId(userId)
+                        .fkUserCommentId(userComment.getId())
+                        .fkTravelDestinationId(travelDestinationId)
+                        .isNewComment(true)
+                        .build()
+        );
+    }
+
+    private UserCommentBoxResponseDTO mapToUserCommentBoxResponseDTO(UserComment userComment) {
+        return UserCommentBoxResponseDTO.builder()
+                .userMessage(userComment.getCommentList())
+                .firstName(userComment.getUserId().getFirstname())
+                .lastName(userComment.getUserId().getLastname())
+                .dateAndTime(userComment.getLocalDateTime())
+                .userId(userComment.getUserId().getId())
+                .id(userComment.getId())
+                .build();
     }
 }
