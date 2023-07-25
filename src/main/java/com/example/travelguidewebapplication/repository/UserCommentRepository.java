@@ -21,4 +21,6 @@ public interface UserCommentRepository extends JpaRepository<UserComment, String
             "WHERE p.id = :id AND p.status= :status " +
             "ORDER BY u.localDateTime DESC")
     List<UserComment> findByFkPlacesToVisitDetailsIdPlacesId(String id, Status status, Pageable pageable);
+
+//    List<UserComment> findByTravelDestinationDetailsIdId(String id, Pageable pageable);
 }

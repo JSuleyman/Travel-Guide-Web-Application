@@ -84,7 +84,7 @@ public class UserCommentServiceImpl implements UserCommentService {
     @Override
     public List<UserCommentBoxResponseDTO> getUserCommentListByPlacesId(String id, int first, int offset) {
         Pageable pageable = PageRequest.of(first, offset);
-        List<UserComment> userComments = userCommentRepository.findByFkPlacesToVisitDetailsIdPlacesId(id, Status.COMPLETED);
+        List<UserComment> userComments = userCommentRepository.findByFkPlacesToVisitDetailsIdPlacesId(id, Status.COMPLETED, pageable);
         return userComments.stream()
                 .map(this::mapToUserCommentBoxResponseDTO)
                 .collect(Collectors.toList());
