@@ -79,6 +79,8 @@ public class AuthenticationService {
         userByEmail.setPassword((passwordEncoder.encode(userChangePasswordRequestDTO.getNewPassword())));
         repository.save(userByEmail);
 
+
+
         return "Parol ugurla deyisdirildi!";
     }
 

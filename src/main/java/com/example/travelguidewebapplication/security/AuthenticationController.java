@@ -67,6 +67,6 @@ public class AuthenticationController {
     @PutMapping("/change_password")
     public ResponseEntity<String> changePassword(@RequestBody UserChangePasswordRequestDTO userChangePasswordRequestDTO) {
         service.changeUserPassword(userChangePasswordRequestDTO);
-        return ResponseEntity.ok("Ugurla deyisdirildi");
+        return ResponseEntity.ok("Şifrə Uğurla Dəyişdirildi!");
     }
 }
