@@ -8,6 +8,7 @@ import com.example.travelguidewebapplication.enums.Status;
 import com.example.travelguidewebapplication.exception.MandatoryException;
 import com.example.travelguidewebapplication.model.*;
 import com.example.travelguidewebapplication.repository.StorageRepository;
+import com.example.travelguidewebapplication.repository.TravelDestinationCardIconListRepository;
 import com.example.travelguidewebapplication.repository.TravelDestinationRepository;
 import com.example.travelguidewebapplication.repository.TravelPlaceCategoryRepository;
 import com.example.travelguidewebapplication.service.inter.TravelDestinationDetailsService;
@@ -33,6 +34,7 @@ public class TravelDestinationServiceImpl implements TravelDestinationService {
     private final UserService userService;
     private final TravelDestinationDetailsService travelDestinationDetailsService;
     private final StorageRepository storageRepository;
+    private final TravelDestinationCardIconListRepository cardIconListRepository;
 
     @Override
     @Transactional
@@ -66,6 +68,7 @@ public class TravelDestinationServiceImpl implements TravelDestinationService {
         TravelPlaceCategory placeCategory = placeKeyRepository.findTravelPlaceKeyByKey(customCardRequestDTO.getCategoryId());
         TravelDestination savedTravelDestination = createTravelDestination(customCardRequestDTO, user, placeCategory);
         createTravelDestinationDetails(customCardRequestDTO, savedTravelDestination);
+        createTravelDestinationCardIconList(customCardRequestDTO, savedTravelDestination);
         return savedTravelDestination.getId();
     }
 
@@ -170,6 +173,17 @@ public class TravelDestinationServiceImpl implements TravelDestinationService {
                 .travelDestination(travelDestination)
                 .build();
         travelDestinationDetailsService.save(travelDestinationDetails);
+    }
+
+    private void createTravelDestinationCardIconList(UserCustomCardRequestDTO customCardRequestDTO, TravelDestination travelDestination) {
+        for (String iconName : customCardRequestDTO.getSelectedIcons()) {
+            TravelDestinationCardIconList travelDestinationCardIconList = TravelDestinationCardIconList.builder()
+                    .iconName(iconName)
+                    .travelDestination(travelDestination)
+                    .build();
+            cardIconListRepository.save(travelDestinationCardIconList);
+        }
+
     }
 
     private Integer getCountByStatus(Integer userId, Status status) {

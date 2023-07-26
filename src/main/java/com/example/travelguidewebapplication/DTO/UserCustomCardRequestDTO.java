@@ -2,6 +2,8 @@ package com.example.travelguidewebapplication.DTO;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class UserCustomCardRequestDTO {
     String categoryId;
@@ -15,5 +17,7 @@ public class UserCustomCardRequestDTO {
     String userComments;
 
     String events;
+
+    List<String> selectedIcons;
 
 }

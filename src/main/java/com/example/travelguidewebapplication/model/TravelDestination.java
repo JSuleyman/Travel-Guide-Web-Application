@@ -50,4 +50,7 @@ public class TravelDestination {
     @OneToMany(mappedBy = "travelDestinationId", fetch = FetchType.LAZY)
     private List<ImageData> imageDataList;
 
+    @Getter(value = AccessLevel.NONE)
+    @OneToMany(mappedBy = "travelDestination", fetch = FetchType.LAZY)
+    List<TravelDestinationCardIconList> travelDestinationCardIconLists;
 }
