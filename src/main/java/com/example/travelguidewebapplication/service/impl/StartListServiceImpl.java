@@ -1,11 +1,11 @@
 package com.example.travelguidewebapplication.service.impl;
 
 import com.example.travelguidewebapplication.DTO.StarRequestDTO;
-import com.example.travelguidewebapplication.model.SessionManager;
-import com.example.travelguidewebapplication.model.StarList;
-import com.example.travelguidewebapplication.model.TravelDestination;
-import com.example.travelguidewebapplication.model.User;
+import com.example.travelguidewebapplication.DTO.response.UserCreatedListResponseDTO;
+import com.example.travelguidewebapplication.DTO.response.UserStarListResponseDTO;
+import com.example.travelguidewebapplication.model.*;
 import com.example.travelguidewebapplication.repository.StartListRepository;
+import com.example.travelguidewebapplication.repository.StorageRepository;
 import com.example.travelguidewebapplication.repository.TravelDestinationRepository;
 import com.example.travelguidewebapplication.repository.UserRespository;
 import com.example.travelguidewebapplication.service.inter.StartListService;
@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +24,7 @@ public class StartListServiceImpl implements StartListService {
     private final TravelDestinationRepository travelDestinationRepository;
     private final UserRespository userRespository;
     private final SessionManager sessionManager;
+    private final StorageRepository storageRepository;
 
     @Override
     public void add(StarRequestDTO starRequestDTO) {
@@ -72,9 +74,31 @@ public class StartListServiceImpl implements StartListService {
     }
 
     @Override
-    public List<TravelDestination> getAll() {
+    public List<UserStarListResponseDTO> getAll() {
         User user = userRespository.findByEmail(sessionManager.getUserName()).orElseThrow();
         String id = String.valueOf(user.getId());
-        return startListRepository.findStarForUser(id);
+        List<TravelDestination> travelDestinationList = startListRepository.findStarForUser(id);
+
+        return travelDestinationList.stream()
+                .map(this::mapToUserStarListResponseDTO)
+                .collect(Collectors.toList());
+    }
+
+    private UserStarListResponseDTO mapToUserStarListResponseDTO(TravelDestination travelDestination) {
+        String imageName = getImageNameForTravelDestination(travelDestination);
+        return UserStarListResponseDTO.builder()
+                .id(travelDestination.getId())
+                .destinationName(travelDestination.getDestinationName())
+                .estimatedCost(travelDestination.getEstimatedCost())
+                .imageUrl(imageName)
+                .build();
+    }
+
+    private String getImageNameForTravelDestination(TravelDestination travelDestination) {
+        ImageData imageData = storageRepository.findByTravelDestinationId(travelDestination)
+                .stream()
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("ImageData not found for TravelDestination"));
+        return imageData.getName();
     }
 }

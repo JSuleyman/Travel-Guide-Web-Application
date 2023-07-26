@@ -1,7 +1,7 @@
 package com.example.travelguidewebapplication.controller;
 
 import com.example.travelguidewebapplication.DTO.StarRequestDTO;
-import com.example.travelguidewebapplication.model.TravelDestination;
+import com.example.travelguidewebapplication.DTO.response.UserStarListResponseDTO;
 import com.example.travelguidewebapplication.model.SessionManager;
 import com.example.travelguidewebapplication.service.inter.StartListService;
 import lombok.RequiredArgsConstructor;
@@ -46,7 +46,7 @@ public class StarListController {
     }
 
     @GetMapping("/getAll")
-    public ResponseEntity<List<TravelDestination>> getAll() {
+    public ResponseEntity<List<UserStarListResponseDTO>> getAll() {
         return ResponseEntity.ok(service.getAll());
     }
 }

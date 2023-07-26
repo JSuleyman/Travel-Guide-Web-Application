@@ -24,9 +24,9 @@ public class OpenAPIConfig {
     @Bean
     public OpenAPI myOpenAPI() {
         Info info = new Info()
-                .title("Service API")
+                .title("Travel Guide")
                 .version("1.0")
-                .description("TEST");
+                .description("API list");
         return new OpenAPI().info(info);
     }
 }

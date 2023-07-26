@@ -1,6 +1,7 @@
 package com.example.travelguidewebapplication.service.inter;
 
 import com.example.travelguidewebapplication.DTO.StarRequestDTO;
+import com.example.travelguidewebapplication.DTO.response.UserStarListResponseDTO;
 import com.example.travelguidewebapplication.model.TravelDestination;
 import com.example.travelguidewebapplication.model.SessionManager;
 
@@ -15,5 +16,5 @@ public interface StartListService {
 
     SessionManager profilDeyisdirmelidir();
 
-    List<TravelDestination> getAll();
+    List<UserStarListResponseDTO> getAll();
 }
