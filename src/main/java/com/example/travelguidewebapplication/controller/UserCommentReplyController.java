@@ -24,7 +24,7 @@ public class UserCommentReplyController {
     @GetMapping("/{commentId}")
     public ResponseEntity<List<UserCommentReplyResponseDTO>> findByCommentId(@PathVariable String commentId,
                                                                              @RequestParam(defaultValue = "0") int page,
-                                                                             @RequestParam(defaultValue = "10") int size) {
+                                                                             @RequestParam(defaultValue = "5") int size) {
         List<UserCommentReplyResponseDTO> userCommentReplies = userCommentReplyService.findByCommentId(commentId, page, size);
         return ResponseEntity.ok(userCommentReplies);
     }
