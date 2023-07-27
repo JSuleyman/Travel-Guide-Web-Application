@@ -11,6 +11,7 @@ import com.example.travelguidewebapplication.repository.StorageRepository;
 import com.example.travelguidewebapplication.repository.TravelDestinationCardIconListRepository;
 import com.example.travelguidewebapplication.repository.TravelDestinationRepository;
 import com.example.travelguidewebapplication.repository.TravelPlaceCategoryRepository;
+import com.example.travelguidewebapplication.service.inter.TravelDestinationCardIconListService;
 import com.example.travelguidewebapplication.service.inter.TravelDestinationDetailsService;
 import com.example.travelguidewebapplication.service.inter.TravelDestinationService;
 import com.example.travelguidewebapplication.service.inter.UserService;
@@ -35,6 +36,7 @@ public class TravelDestinationServiceImpl implements TravelDestinationService {
     private final TravelDestinationDetailsService travelDestinationDetailsService;
     private final StorageRepository storageRepository;
     private final TravelDestinationCardIconListRepository cardIconListRepository;
+    private final TravelDestinationCardIconListService cardIconListService;
 
     @Override
     @Transactional
@@ -108,6 +110,7 @@ public class TravelDestinationServiceImpl implements TravelDestinationService {
 
     private UserCreatedListResponseDTO mapToUserCreatedListResponseDTO(TravelDestination travelDestination) {
         String imageName = getImageNameForTravelDestination(travelDestination);
+        List<String> iconList = cardIconListService.findNameByTravelDestinationId(travelDestination.getId());
         return UserCreatedListResponseDTO.builder()
                 .id(travelDestination.getId())
                 .description(travelDestination.getCategory().getDescription())
@@ -115,6 +118,7 @@ public class TravelDestinationServiceImpl implements TravelDestinationService {
                 .destinationName(travelDestination.getDestinationName())
                 .estimatedCost(travelDestination.getEstimatedCost())
                 .imageUrl(imageName)
+                .iconList(iconList)
                 .build();
     }
 

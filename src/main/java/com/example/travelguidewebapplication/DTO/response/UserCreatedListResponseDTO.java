@@ -4,6 +4,8 @@ import com.example.travelguidewebapplication.enums.Status;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.List;
+
 @Data
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -16,4 +18,6 @@ public class UserCreatedListResponseDTO {
     String description;
     Integer estimatedCost;
     Status status;
+
+    List<String> iconList;
 }
