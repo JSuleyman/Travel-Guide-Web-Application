@@ -1,7 +1,7 @@
 package com.example.travelguidewebapplication.services;
 
 import com.example.travelguidewebapplication.model.User;
-import com.example.travelguidewebapplication.repository.UserRespository;
+import com.example.travelguidewebapplication.repository.UserRepository;
 import com.example.travelguidewebapplication.security.AuthenticationService;
 import com.example.travelguidewebapplication.security.UserChangePasswordRequestDTO;
 import com.example.travelguidewebapplication.service.inter.UserService;
@@ -23,7 +23,7 @@ public class UserChangePasswordTests {
     private UserService userService;
 
     @Mock
-    private UserRespository userRespository;
+    private UserRepository userRepository;
 
     @Mock
     private PasswordEncoder passwordEncoder;
@@ -50,7 +50,7 @@ public class UserChangePasswordTests {
         when(userService.getCurrentUser()).thenReturn(user);
 
         // When: UserRepository.save() is called to save the updated user
-        when(userRespository.save(any())).thenReturn(user);
+        when(userRepository.save(any())).thenReturn(user);
 
         // When: PasswordEncoder.matches() is called to check the old password1
         when(passwordEncoder.matches("1234", "1234")).thenReturn(true);

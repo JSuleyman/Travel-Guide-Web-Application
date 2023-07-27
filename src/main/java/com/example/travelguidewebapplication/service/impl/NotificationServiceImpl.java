@@ -7,7 +7,6 @@ import com.example.travelguidewebapplication.model.User;
 import com.example.travelguidewebapplication.repository.NotificationRepository;
 import com.example.travelguidewebapplication.repository.TravelDestinationRepository;
 import com.example.travelguidewebapplication.repository.UserCommentRepository;
-import com.example.travelguidewebapplication.repository.UserRespository;
 import com.example.travelguidewebapplication.service.inter.NotificationService;
 import com.example.travelguidewebapplication.service.inter.UserService;
 import lombok.RequiredArgsConstructor;

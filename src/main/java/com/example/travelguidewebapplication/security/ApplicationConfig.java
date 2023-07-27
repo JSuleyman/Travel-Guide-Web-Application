@@ -1,6 +1,6 @@
 package com.example.travelguidewebapplication.security;
 
-import com.example.travelguidewebapplication.repository.UserRespository;
+import com.example.travelguidewebapplication.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,7 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @RequiredArgsConstructor
 public class ApplicationConfig {
 
-    private final UserRespository repository;
+    private final UserRepository repository;
 
     @Bean
     public UserDetailsService userDetailsService() {

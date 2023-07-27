@@ -1,13 +1,12 @@
 package com.example.travelguidewebapplication.service.impl;
 
 import com.example.travelguidewebapplication.DTO.StarRequestDTO;
-import com.example.travelguidewebapplication.DTO.response.UserCreatedListResponseDTO;
 import com.example.travelguidewebapplication.DTO.response.UserStarListResponseDTO;
 import com.example.travelguidewebapplication.model.*;
 import com.example.travelguidewebapplication.repository.StartListRepository;
 import com.example.travelguidewebapplication.repository.StorageRepository;
 import com.example.travelguidewebapplication.repository.TravelDestinationRepository;
-import com.example.travelguidewebapplication.repository.UserRespository;
+import com.example.travelguidewebapplication.repository.UserRepository;
 import com.example.travelguidewebapplication.service.inter.StartListService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,13 +21,13 @@ public class StartListServiceImpl implements StartListService {
 
     private final StartListRepository startListRepository;
     private final TravelDestinationRepository travelDestinationRepository;
-    private final UserRespository userRespository;
+    private final UserRepository userRepository;
     private final SessionManager sessionManager;
     private final StorageRepository storageRepository;
 
     @Override
     public void add(StarRequestDTO starRequestDTO) {
-        User user = userRespository.findByEmail(sessionManager.getUserName()).orElseThrow();
+        User user = userRepository.findByEmail(sessionManager.getUserName()).orElseThrow();
 
         TravelDestination travelDestination = travelDestinationRepository.findById(starRequestDTO.getId()).orElseThrow(() -> new NoSuchElementException("Tapilmadi"));
         StarList starList = new StarList();
@@ -41,7 +40,7 @@ public class StartListServiceImpl implements StartListService {
     @Override
     public boolean isFavorite(String id) {
         try {
-            User user = userRespository.findByEmail(sessionManager.getUserName()).orElseThrow();
+            User user = userRepository.findByEmail(sessionManager.getUserName()).orElseThrow();
             Integer userId = user.getId();
             StarList starList = startListRepository.findByTravelDestination_IdAndUserId_Id(id, userId);
             return starList.isFavorite();
@@ -53,7 +52,7 @@ public class StartListServiceImpl implements StartListService {
 
     @Override
     public void delete(StarRequestDTO starRequestDTO) {
-        User user = userRespository.findByEmail(sessionManager.getUserName()).orElseThrow(() -> new NoSuchElementException("User not found"));
+        User user = userRepository.findByEmail(sessionManager.getUserName()).orElseThrow(() -> new NoSuchElementException("User not found"));
 
         TravelDestination travelDestination = travelDestinationRepository.findById(starRequestDTO.getId()).orElseThrow(() -> new NoSuchElementException("Place not found"));
 
@@ -66,7 +65,7 @@ public class StartListServiceImpl implements StartListService {
 
     @Override
     public SessionManager profilDeyisdirmelidir() {
-        User user = userRespository.findByEmail(sessionManager.getUserName()).orElseThrow();
+        User user = userRepository.findByEmail(sessionManager.getUserName()).orElseThrow();
         sessionManager.setFirstName(user.getFirstname());
         sessionManager.setLastName(user.getLastname());
 
@@ -75,7 +74,7 @@ public class StartListServiceImpl implements StartListService {
 
     @Override
     public List<UserStarListResponseDTO> getAll() {
-        User user = userRespository.findByEmail(sessionManager.getUserName()).orElseThrow();
+        User user = userRepository.findByEmail(sessionManager.getUserName()).orElseThrow();
         String id = String.valueOf(user.getId());
         List<TravelDestination> travelDestinationList = startListRepository.findStarForUser(id);
 

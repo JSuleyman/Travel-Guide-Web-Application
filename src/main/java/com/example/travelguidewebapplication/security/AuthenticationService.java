@@ -5,7 +5,7 @@ import com.example.travelguidewebapplication.exception.NotUniqueUser;
 import com.example.travelguidewebapplication.exception.PasswordMismatchException;
 import com.example.travelguidewebapplication.exception.WrongPassword;
 import com.example.travelguidewebapplication.model.User;
-import com.example.travelguidewebapplication.repository.UserRespository;
+import com.example.travelguidewebapplication.repository.UserRepository;
 import com.example.travelguidewebapplication.service.inter.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
-    private final UserRespository repository;
+    private final UserRepository repository;
     private final TokenRepository tokenRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
