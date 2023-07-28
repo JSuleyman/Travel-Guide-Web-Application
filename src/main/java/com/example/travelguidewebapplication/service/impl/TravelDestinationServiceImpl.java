@@ -19,6 +19,9 @@ import io.micrometer.common.util.StringUtils;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.connection.RedisConnection;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -38,9 +41,28 @@ public class TravelDestinationServiceImpl implements TravelDestinationService {
     private final TravelDestinationCardIconListRepository cardIconListRepository;
     private final TravelDestinationCardIconListService cardIconListService;
 
+    private static final String REDIS_KEY_PREFIX = "places_to_visit_";
+    private final RedisTemplate<String, List<PlacesToVisitByValueResponseDTO>> redisTemplate;
+    private final RedisConnectionFactory redisConnectionFactory;
+
     @Override
     @Transactional
     public List<PlacesToVisitByValueResponseDTO> getByValue(String key) {
+        String redisKey = REDIS_KEY_PREFIX + key;
+        List<PlacesToVisitByValueResponseDTO> responseDTOs = redisTemplate.opsForValue().get(redisKey);
+
+        if (responseDTOs == null) {
+            System.out.println("---------------Melumat Yoxdu-------------");
+            responseDTOs = fetchAndCacheData(key);
+        } else {
+            System.out.println("-------------Melumat Var-------------");
+        }
+
+        return responseDTOs;
+
+    }
+
+    private List<PlacesToVisitByValueResponseDTO> fetchAndCacheData(String key) {
         List<PlacesToVisitByValueResponseDTO> responseDTOs = new ArrayList<>();
         List<TravelDestination> travelDestinations = travelDestinationRepository.findByTravelPlaceKeyValue(key, Status.COMPLETED);
 
@@ -49,8 +71,35 @@ public class TravelDestinationServiceImpl implements TravelDestinationService {
             PlacesToVisitByValueResponseDTO responseDTO = mapToPlacesToVisitByValueResponseDTO(travelDestination, imgName);
             responseDTOs.add(responseDTO);
         }
+
+        // Veriyi Redis'e ekle
+        String redisKey = REDIS_KEY_PREFIX + key;
+        try (RedisConnection connection = redisConnectionFactory.getConnection()) {
+            redisTemplate.opsForValue().set(redisKey, responseDTOs);
+//            ObjectMapper objectMapper = new ObjectMapper();
+//            byte[] serializedData = objectMapper.writeValueAsBytes(responseDTOs);
+//            connection.set(redisKey.getBytes(), serializedData);
+        } catch (Exception e) {
+            // Serileştirme hatasıyla ilgilenin
+            e.printStackTrace();
+        }
+
         return responseDTOs;
     }
+
+//    @Override
+//    @Transactional
+//    public List<PlacesToVisitByValueResponseDTO> getByValue(String key) {
+//        List<PlacesToVisitByValueResponseDTO> responseDTOs = new ArrayList<>();
+//        List<TravelDestination> travelDestinations = travelDestinationRepository.findByTravelPlaceKeyValue(key, Status.COMPLETED);
+//
+//        for (TravelDestination travelDestination : travelDestinations) {
+//            String imgName = getImageNameForTravelDestination(travelDestination);
+//            PlacesToVisitByValueResponseDTO responseDTO = mapToPlacesToVisitByValueResponseDTO(travelDestination, imgName);
+//            responseDTOs.add(responseDTO);
+//        }
+//        return responseDTOs;
+//    }
 
     @Override
     @Transactional
