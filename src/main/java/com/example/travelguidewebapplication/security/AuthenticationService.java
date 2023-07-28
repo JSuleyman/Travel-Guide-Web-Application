@@ -1,5 +1,6 @@
 package com.example.travelguidewebapplication.security;
 
+import com.example.travelguidewebapplication.error.optimal.TestException;
 import com.example.travelguidewebapplication.exception.NotFoundUser;
 import com.example.travelguidewebapplication.exception.NotUniqueUser;
 import com.example.travelguidewebapplication.exception.PasswordMismatchException;

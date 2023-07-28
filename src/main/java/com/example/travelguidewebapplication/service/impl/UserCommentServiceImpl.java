@@ -136,6 +136,7 @@ public class UserCommentServiceImpl implements UserCommentService {
                 .lastName(userComment.getUserId().getLastname())
                 .dateAndTime(userComment.getLocalDateTime())
                 .userId(userComment.getUserId().getId())
+                .currentUserId(userService.getCurrentUser().getId())
                 .id(userComment.getId())
                 .build();
     }
