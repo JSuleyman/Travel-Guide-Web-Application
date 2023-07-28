@@ -17,4 +17,5 @@ public class UserCommentReplyResponseDTO {
     private LocalDateTime dateAndTime;
     private String replyCommentList;
     Integer userId;
+    Integer currentUserId;
 }

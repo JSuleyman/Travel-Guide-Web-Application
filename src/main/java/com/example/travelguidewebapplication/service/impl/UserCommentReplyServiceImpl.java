@@ -64,6 +64,7 @@ public class UserCommentReplyServiceImpl implements UserCommentReplyService {
                 .dateAndTime(userCommentReply.getLocalDateTime())
                 .replyCommentList(userCommentReply.getReplyCommentList())
                 .userId(userCommentReply.getUserId().getId())
+                .currentUserId(userService.getCurrentUser().getId())
                 .build();
     }
 }
