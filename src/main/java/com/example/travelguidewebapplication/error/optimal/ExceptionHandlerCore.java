@@ -10,13 +10,13 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import java.time.LocalDateTime;
 
-@ControllerAdvice
+//@ControllerAdvice
 public class ExceptionHandlerCore extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<Object> handleExceptions(Exception ex, WebRequest request) {
-        return buildResponseEntity(ex, request);
-    }
+//    @ExceptionHandler(Exception.class)
+//    public ResponseEntity<Object> handleExceptions(Exception ex, WebRequest request) {
+//        return buildResponseEntity(ex, request);
+//    }
 
     //Helper Methods
 
