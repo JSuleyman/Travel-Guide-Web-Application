@@ -48,6 +48,7 @@ public class StorageServiceImpl implements StorageService {
         String redisKey = REDIS_KEY_PREFIX + fileName + travelDestinationId;
         byte[] responseDTOs = redisTemplate.opsForValue().get(redisKey);
         if (responseDTOs == null) {
+            System.out.println("----------Cach islemedi------------");
             Optional<ImageData> dbImageData = repository.findByNameAndAndTravelDestinationId_Id(fileName, travelDestinationId);
             byte[] images = ImageUtils.decompressImage(dbImageData.get().getImageData());
             try (RedisConnection connection = redisConnectionFactory.getConnection()) {
@@ -57,6 +58,7 @@ public class StorageServiceImpl implements StorageService {
             }
             return images;
         }
+        System.out.println("----------Cach ishlediiiii------------");
         return responseDTOs;
     }
 }
