@@ -9,6 +9,9 @@ import com.example.travelguidewebapplication.util.ImageUtils;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.connection.RedisConnection;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,6 +25,10 @@ public class StorageServiceImpl implements StorageService {
 
     private final StorageRepository repository;
     private final TravelDestinationRepository travelDestinationRepository;
+
+    private static final String REDIS_KEY_PREFIX = "image_data_";
+    private final RedisTemplate<String, byte[]> redisTemplate;
+    private final RedisConnectionFactory redisConnectionFactory;
 
     @Override
     public String uploadImage(MultipartFile[] file, String travelDestinationId) throws IOException {
@@ -38,8 +45,18 @@ public class StorageServiceImpl implements StorageService {
 
     @Transactional
     public byte[] downloadImage(String fileName, String travelDestinationId) {
-        Optional<ImageData> dbImageData = repository.findByNameAndAndTravelDestinationId_Id(fileName, travelDestinationId);
-        byte[] images = ImageUtils.decompressImage(dbImageData.get().getImageData());
-        return images;
+        String redisKey = REDIS_KEY_PREFIX + fileName + travelDestinationId;
+        byte[] responseDTOs = redisTemplate.opsForValue().get(redisKey);
+        if (responseDTOs == null) {
+            Optional<ImageData> dbImageData = repository.findByNameAndAndTravelDestinationId_Id(fileName, travelDestinationId);
+            byte[] images = ImageUtils.decompressImage(dbImageData.get().getImageData());
+            try (RedisConnection connection = redisConnectionFactory.getConnection()) {
+                redisTemplate.opsForValue().set(redisKey, images);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return images;
+        }
+        return responseDTOs;
     }
 }
