@@ -19,5 +19,5 @@ public interface StartListRepository extends JpaRepository<StarList, String> {
     StarList findByUserIdAndTravelDestination(User user, TravelDestination places);
 
     @Query("SELECT p.travelDestination FROM StarList p INNER JOIN p.userId k WHERE k.id = :userId")
-    List<TravelDestination> findStarForUser(@Param("userId") String id);
+    List<TravelDestination> findStarForUser(@Param("userId") Integer id);
 }

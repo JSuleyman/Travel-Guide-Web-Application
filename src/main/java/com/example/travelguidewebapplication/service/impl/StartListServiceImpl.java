@@ -8,6 +8,8 @@ import com.example.travelguidewebapplication.repository.StorageRepository;
 import com.example.travelguidewebapplication.repository.TravelDestinationRepository;
 import com.example.travelguidewebapplication.repository.UserRepository;
 import com.example.travelguidewebapplication.service.inter.StartListService;
+import com.example.travelguidewebapplication.service.inter.UserService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +26,7 @@ public class StartListServiceImpl implements StartListService {
     private final UserRepository userRepository;
     private final SessionManager sessionManager;
     private final StorageRepository storageRepository;
+    private final UserService userService;
 
     @Override
     public void add(StarRequestDTO starRequestDTO) {
@@ -72,11 +75,10 @@ public class StartListServiceImpl implements StartListService {
         return sessionManager;
     }
 
+    @Transactional
     @Override
     public List<UserStarListResponseDTO> getAll() {
-        User user = userRepository.findByEmail(sessionManager.getUserName()).orElseThrow();
-        String id = String.valueOf(user.getId());
-        List<TravelDestination> travelDestinationList = startListRepository.findStarForUser(id);
+        List<TravelDestination> travelDestinationList = startListRepository.findStarForUser(userService.getCurrentUser().getId());
 
         return travelDestinationList.stream()
                 .map(this::mapToUserStarListResponseDTO)
