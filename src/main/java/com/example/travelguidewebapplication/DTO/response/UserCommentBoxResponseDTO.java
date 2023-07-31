@@ -18,4 +18,5 @@ public class UserCommentBoxResponseDTO {
     LocalDateTime dateAndTime;
     Integer userId;
     Integer currentUserId;
+    Long commentReplyCount;
 }

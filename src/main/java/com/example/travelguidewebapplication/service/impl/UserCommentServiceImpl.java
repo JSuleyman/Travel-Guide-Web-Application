@@ -113,6 +113,7 @@ public class UserCommentServiceImpl implements UserCommentService {
                         .userId(user)
                         .travelDestinationDetailsId(travelDestinationDetails)
                         .commentList(comment)
+                        .commentReplyCount(0L)
                         .localDateTime(DateHelper.getAzerbaijanDateTime())
                         .build()
         );
@@ -132,6 +133,7 @@ public class UserCommentServiceImpl implements UserCommentService {
     private UserCommentBoxResponseDTO mapToUserCommentBoxResponseDTO(UserComment userComment) {
         return UserCommentBoxResponseDTO.builder()
                 .userMessage(userComment.getCommentList())
+                .commentReplyCount(userComment.getCommentReplyCount())
                 .firstName(userComment.getUserId().getFirstname())
                 .lastName(userComment.getUserId().getLastname())
                 .dateAndTime(userComment.getLocalDateTime())

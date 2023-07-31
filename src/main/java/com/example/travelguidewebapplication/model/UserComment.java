@@ -23,6 +23,8 @@ public class UserComment {
 
     LocalDateTime localDateTime;
 
+    Long commentReplyCount;
+
     @ManyToOne
     @JoinColumn(name = "travel_destination_details_id", referencedColumnName = "id", nullable = false)
     TravelDestinationDetails travelDestinationDetailsId;

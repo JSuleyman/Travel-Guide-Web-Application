@@ -28,6 +28,10 @@ public class UserCommentReplyServiceImpl implements UserCommentReplyService {
     public void add(UserCommentReplyRequestDTO replyRequestDTO) {
         UserComment userComment = userCommentRepository.findById(replyRequestDTO.getCommentId()).orElseThrow();
 
+        Long currentCommentReplyCount = userComment.getCommentReplyCount();
+        userComment.setCommentReplyCount(currentCommentReplyCount + 1L);
+        userCommentRepository.save(userComment);
+
         UserCommentReply userCommentReply = UserCommentReply.builder()
                 .userCommentId(userComment)
                 .replyCommentList(replyRequestDTO.getReplyMessage())
