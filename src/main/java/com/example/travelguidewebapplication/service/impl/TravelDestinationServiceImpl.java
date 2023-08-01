@@ -143,6 +143,7 @@ public class TravelDestinationServiceImpl implements TravelDestinationService {
     // Helper methods
 
     private PlacesToVisitByValueResponseDTO mapToPlacesToVisitByValueResponseDTO(TravelDestination travelDestination, String imageName) {
+        List<String> iconList = cardIconListService.findNameByTravelDestinationId(travelDestination.getId());
         return PlacesToVisitByValueResponseDTO.builder()
                 .id(travelDestination.getId())
                 .createdByName(travelDestination.getCreatedByName())
@@ -150,6 +151,7 @@ public class TravelDestinationServiceImpl implements TravelDestinationService {
                 .imageUrl(imageName)
                 .likeCount(travelDestination.getLikeCount())
                 .destination(travelDestination.getDestinationName())
+                .iconList(iconList)
                 .build();
     }
 

@@ -4,6 +4,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Data
 @Builder
@@ -17,4 +18,6 @@ public class PlacesToVisitByValueResponseDTO implements Serializable {
     Integer estimatedCost;
     Long likeCount;
     String createdByName;
+
+    List<String> iconList;
 }
