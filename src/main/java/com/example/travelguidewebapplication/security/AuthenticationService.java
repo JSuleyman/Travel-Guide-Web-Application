@@ -1,9 +1,6 @@
 package com.example.travelguidewebapplication.security;
 
-import com.example.travelguidewebapplication.exception.NotFoundUser;
-import com.example.travelguidewebapplication.exception.NotUniqueUser;
-import com.example.travelguidewebapplication.exception.PasswordMismatchException;
-import com.example.travelguidewebapplication.exception.WrongPassword;
+import com.example.travelguidewebapplication.exception.*;
 import com.example.travelguidewebapplication.model.User;
 import com.example.travelguidewebapplication.model.UserEmailVerification;
 import com.example.travelguidewebapplication.repository.UserEmailVerificationRepository;
@@ -103,6 +100,11 @@ public class AuthenticationService {
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         var userByEmail = repository.findByEmail(request.getEmail())
                 .orElseThrow(NotFoundUser::new);
+
+        if (!userByEmail.isVerified()) {
+            throw new IsNotVerifiredUser();
+        }
+
         if (!passwordEncoder.matches(request.getPassword(), userByEmail.getPassword())) {
             throw new WrongPassword();
         }
