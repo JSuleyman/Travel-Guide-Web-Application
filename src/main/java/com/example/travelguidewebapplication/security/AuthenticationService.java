@@ -1,18 +1,25 @@
 package com.example.travelguidewebapplication.security;
 
-import com.example.travelguidewebapplication.error.optimal.TestException;
 import com.example.travelguidewebapplication.exception.NotFoundUser;
 import com.example.travelguidewebapplication.exception.NotUniqueUser;
 import com.example.travelguidewebapplication.exception.PasswordMismatchException;
 import com.example.travelguidewebapplication.exception.WrongPassword;
 import com.example.travelguidewebapplication.model.User;
+import com.example.travelguidewebapplication.model.UserEmailVerification;
+import com.example.travelguidewebapplication.repository.UserEmailVerificationRepository;
 import com.example.travelguidewebapplication.repository.UserRepository;
+import com.example.travelguidewebapplication.service.impl.EmailSenderServiceImpl;
+import com.example.travelguidewebapplication.service.inter.UserEmailVerificationService;
 import com.example.travelguidewebapplication.service.inter.UserService;
+import com.example.travelguidewebapplication.util.VerificationCodeGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -23,22 +30,77 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
+    private final UserEmailVerificationService userEmailVerificationService;
+    private final EmailSenderServiceImpl emailSenderService;
+    private final UserEmailVerificationRepository userEmailVerificationRepository;
 
     public AuthenticationResponse register(RegisterRequest request) {
+
+        String verificationCode = VerificationCodeGenerator.generateVerificationCode();
+
+        User userVerify = repository.findByEmailForVerify(request.getEmail());
+
+        if (userVerify != null) {
+            if (!userVerify.getFirstname().isEmpty()) {
+
+                List<UserEmailVerification> list = userEmailVerificationRepository.listUserById(userVerify.getId());
+
+                for (UserEmailVerification userEmailVerification : list) {
+                    userEmailVerification.setHasExpired(true);
+                    userEmailVerificationService.save(userEmailVerification);
+                }
+
+                var savedUserEmailVerification = UserEmailVerification.builder()
+                        .verificationCode(verificationCode)
+                        .user(userVerify)
+                        .verificationCodeCreatedAt(LocalDateTime.now())
+                        .verificationCodeExpirationMinutes(1)
+                        .hasExpired(false)
+                        .build();
+                userEmailVerificationService.save(savedUserEmailVerification);
+
+                emailSenderService.sendEmail(request.getEmail(),
+                        "Verification Email code",
+                        verificationCode);
+                return AuthenticationResponse.builder()
+                        .token(null)
+                        .message("Code gonderildi")
+                        .build();
+            }
+        }
+
+
         if (repository.findAll().stream()
+                .filter(User::isVerified)
                 .anyMatch(user -> user.getEmail().equalsIgnoreCase(request.getEmail()))) {
             throw new NotUniqueUser();
         }
+
+
         var user = User.builder()
                 .firstname(request.getFirstname())
                 .lastname(request.getLastname())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.USER)
+                .verified(false)
                 .build();
         var savedUser = repository.save(user);
-//        var jwtToken = jwtService.generateToken(user);
-//        saveUserToken(savedUser, jwtToken);
+
+
+        var savedUserEmailVerification = UserEmailVerification.builder()
+                .verificationCode(verificationCode)
+                .user(savedUser)
+                .verificationCodeCreatedAt(LocalDateTime.now())
+                .verificationCodeExpirationMinutes(1)
+                .hasExpired(false)
+                .build();
+        userEmailVerificationService.save(savedUserEmailVerification);
+
+        emailSenderService.sendEmail(savedUser.getEmail(),
+                "Verification Email code",
+                savedUserEmailVerification.getVerificationCode());
+
         return AuthenticationResponse.builder()
                 .token(null)
                 .message("Successfully")

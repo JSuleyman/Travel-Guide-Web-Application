@@ -19,5 +19,7 @@ public class PlacesToVisitByValueResponseDTO implements Serializable {
     Long likeCount;
     String createdByName;
 
+    boolean isStar;
+
     List<String> iconList;
 }

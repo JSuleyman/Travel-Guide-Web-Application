@@ -41,6 +41,9 @@ public class User implements UserDetails {
     @Column(name = "password")
     String password;
 
+    @Column(name = "verified")
+    boolean verified;
+
     @Enumerated(EnumType.STRING)
     private Role role;
 
@@ -64,6 +67,10 @@ public class User implements UserDetails {
     @Getter(AccessLevel.NONE)
     @OneToMany(mappedBy = "userId", fetch = FetchType.LAZY)
     List<UserCommentReply> userCommentReplies;
+
+    @Getter(value = AccessLevel.NONE)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    List<UserEmailVerification> userEmailVerifications;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
