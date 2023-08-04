@@ -35,16 +35,12 @@ public class AuthenticationService {
     private final UserEmailVerificationRepository userEmailVerificationRepository;
 
     public AuthenticationResponse register(RegisterRequest request) {
-
         String verificationCode = VerificationCodeGenerator.generateVerificationCode();
-
         User userVerify = repository.findByEmailForVerify(request.getEmail());
 
         if (userVerify != null) {
             if (!userVerify.getFirstname().isEmpty()) {
-
                 List<UserEmailVerification> list = userEmailVerificationRepository.listUserById(userVerify.getId());
-
                 for (UserEmailVerification userEmailVerification : list) {
                     userEmailVerification.setHasExpired(true);
                     userEmailVerificationService.save(userEmailVerification);
@@ -69,13 +65,11 @@ public class AuthenticationService {
             }
         }
 
-
         if (repository.findAll().stream()
                 .filter(User::isVerified)
                 .anyMatch(user -> user.getEmail().equalsIgnoreCase(request.getEmail()))) {
             throw new NotUniqueUser();
         }
-
 
         var user = User.builder()
                 .firstname(request.getFirstname())
@@ -86,7 +80,6 @@ public class AuthenticationService {
                 .verified(false)
                 .build();
         var savedUser = repository.save(user);
-
 
         var savedUserEmailVerification = UserEmailVerification.builder()
                 .verificationCode(verificationCode)

@@ -20,4 +20,9 @@ public class UserEmailVerificationController {
                                              @RequestParam String verificationCode) {
         return ResponseEntity.ok(userEmailVerificationService.verifyUser(email, verificationCode));
     }
+
+    @PostMapping("/send_repeat_verification_code")
+    public void repeatSendVerificationCode(@RequestParam String email) {
+        userEmailVerificationService.repeatSendVerificationCode(email);
+    }
 }

@@ -7,10 +7,12 @@ import com.example.travelguidewebapplication.repository.UserEmailVerificationRep
 import com.example.travelguidewebapplication.repository.UserRepository;
 import com.example.travelguidewebapplication.service.inter.UserEmailVerificationService;
 import com.example.travelguidewebapplication.service.inter.UserService;
+import com.example.travelguidewebapplication.util.VerificationCodeGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +21,7 @@ public class UserEmailVerificationServiceImpl implements UserEmailVerificationSe
     private final UserEmailVerificationRepository userEmailVerificationRepository;
     private final UserService userService;
     private final UserRepository userRepository;
+    private final EmailSenderServiceImpl emailSenderService;
 
     @Override
     public void save(UserEmailVerification userEmailVerification) {
@@ -39,9 +42,6 @@ public class UserEmailVerificationServiceImpl implements UserEmailVerificationSe
         LocalDateTime currentTime = LocalDateTime.now();
         LocalDateTime expirationTime = codeCreatedAt.plusMinutes(codeExpirationMinutes);
 
-        System.out.printf(currentTime + " current");
-        System.out.printf(expirationTime + " expirationTime");
-
         if (currentTime.isAfter(expirationTime)) {
             userEmailVerification.setHasExpired(true);
             userEmailVerificationRepository.save(userEmailVerification);
@@ -59,6 +59,36 @@ public class UserEmailVerificationServiceImpl implements UserEmailVerificationSe
             return "User email verification successful.";
         } else {
             return "Invalid verification code.";
+        }
+    }
+
+    @Override
+    public void repeatSendVerificationCode(String email) {
+        User user = userRepository.findByEmail(email).stream()
+                .findFirst()
+                .orElseThrow(NotFoundUser::new);
+
+        if (!user.isVerified()) {
+            String verificationCode = VerificationCodeGenerator.generateVerificationCode();
+
+            List<UserEmailVerification> list = userEmailVerificationRepository.listUserById(user.getId());
+            for (UserEmailVerification userEmailVerification : list) {
+                userEmailVerification.setHasExpired(true);
+                save(userEmailVerification);
+            }
+
+            var savedUserEmailVerification = UserEmailVerification.builder()
+                    .verificationCode(verificationCode)
+                    .user(user)
+                    .verificationCodeCreatedAt(LocalDateTime.now())
+                    .verificationCodeExpirationMinutes(1)
+                    .hasExpired(false)
+                    .build();
+            save(savedUserEmailVerification);
+
+            emailSenderService.sendEmail(email,
+                    "Verification Email code",
+                    verificationCode);
         }
     }
 }
