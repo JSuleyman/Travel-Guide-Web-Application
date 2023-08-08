@@ -95,6 +95,13 @@ public class UserCommentServiceImpl implements UserCommentService {
         return userService.getCurrentUser().getId();
     }
 
+    @Override
+    public Integer commentCountByTravelDestinationId(String id) {
+        return userCommentRepository
+                .findByTravelDestinationId(id)
+                .size();
+    }
+
     //Helper Methods
 
     private void validateCommentNotEmpty(String comment) {

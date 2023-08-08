@@ -11,4 +11,6 @@ public interface UserCommentService {
     List<UserCommentBoxResponseDTO> getUserCommentListByPlacesId(String id, int first, int offset);
 
     Integer currentUserId();
+
+    Integer commentCountByTravelDestinationId(String id);
 }

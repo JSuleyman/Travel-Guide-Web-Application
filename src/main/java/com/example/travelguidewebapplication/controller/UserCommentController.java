@@ -32,4 +32,11 @@ public class UserCommentController {
     public ResponseEntity<Integer> getCurrenctUserId() {
         return ResponseEntity.ok(userCommentService.currentUserId());
     }
+
+    @GetMapping("/count")
+    public ResponseEntity<Integer> commentCountByTravelDestinationId(
+            @RequestParam String travelDestinationId) {
+        return ResponseEntity
+                .ok(userCommentService.commentCountByTravelDestinationId(travelDestinationId));
+    }
 }

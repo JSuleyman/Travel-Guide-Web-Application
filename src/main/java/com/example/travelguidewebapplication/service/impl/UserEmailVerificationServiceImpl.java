@@ -42,11 +42,13 @@ public class UserEmailVerificationServiceImpl implements UserEmailVerificationSe
         LocalDateTime currentTime = LocalDateTime.now();
         LocalDateTime expirationTime = codeCreatedAt.plusMinutes(codeExpirationMinutes);
 
+        // 2 dene if birinde kod sehvdise birinde de kodun suresi kecmeyi
+
         if (currentTime.isAfter(expirationTime)) {
             userEmailVerification.setHasExpired(true);
             userEmailVerificationRepository.save(userEmailVerification);
             // Doğrulama kodu süresi geçmişse, kullanıcıyı uyarın veya kodun yeniden gönderilmesini sağlayın.
-            return "Verification code has expired. Please request a new code.";
+            return "Verification code has expired. Please request a new code."; // bura 1 error elave ele
         }
 
         if (userEmailVerification.getVerificationCode().equals(verificationCode)) {
@@ -58,7 +60,7 @@ public class UserEmailVerificationServiceImpl implements UserEmailVerificationSe
             userEmailVerificationRepository.save(userEmailVerification);
             return "User email verification successful.";
         } else {
-            return "Invalid verification code.";
+            return "Invalid verification code."; // burda da 2 inci error gonder
         }
     }
 
