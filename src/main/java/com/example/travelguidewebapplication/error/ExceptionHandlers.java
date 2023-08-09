@@ -72,6 +72,24 @@ public class ExceptionHandlers {
 
         return ResponseEntity.status(errorResponse.getStatus()).body(errorResponse);
     }
+
+    @ExceptionHandler(value = VerificationCodeHasExpired.class)
+    public ResponseEntity<ErrorResponse> handleVerificationCodeHasExpired(VerificationCodeHasExpired ex) {
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setErrorMessage("Verification code has expired. Please request a new code.");
+        errorResponse.setStatus(HttpStatus.BAD_REQUEST);
+
+        return ResponseEntity.status(errorResponse.getStatus()).body(errorResponse);
+    }
+
+    @ExceptionHandler(value = InvalidVerificationCode.class)
+    public ResponseEntity<ErrorResponse> handleInvalidVerificationCode(InvalidVerificationCode ex) {
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setErrorMessage("Invalid verification code!");
+        errorResponse.setStatus(HttpStatus.BAD_REQUEST);
+
+        return ResponseEntity.status(errorResponse.getStatus()).body(errorResponse);
+    }
 }
 
 
