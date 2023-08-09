@@ -1,5 +1,6 @@
-package com.example.travelguidewebapplication.redis;
+package com.example.travelguidewebapplication.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,12 +10,19 @@ import org.springframework.data.redis.core.RedisTemplate;
 
 @Configuration
 @EnableCaching
-public class AppConfiguration {
+public class RedisConfig {
+
+    @Value(value = "${custom_redis_host}")
+    private  String hostName;
+    @Value(value = "${custom_redis_port}")
+    private  String port;
+    @Value(value = "${custom_redis_password}")
+    private String password;
 
     @Bean
     public JedisConnectionFactory jedisConnectionFactory() {
-        RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration("redis-10718.c11.us-east-1-2.ec2.cloud.redislabs.com", 10718);
-        redisStandaloneConfiguration.setPassword("VcGc4gaIcFbWQKF9GCDkIU3jFuS8el4k");
+        RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration(hostName, Integer.parseInt(port));
+        redisStandaloneConfiguration.setPassword(password);
         return new JedisConnectionFactory(redisStandaloneConfiguration);
     }
 
