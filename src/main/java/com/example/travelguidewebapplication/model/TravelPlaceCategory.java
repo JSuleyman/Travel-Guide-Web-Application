@@ -1,5 +1,6 @@
 package com.example.travelguidewebapplication.model;
 
+import com.example.travelguidewebapplication.util.CoreEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -12,10 +13,10 @@ import java.util.Collection;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class TravelPlaceCategory {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    String id;
+public class TravelPlaceCategory extends CoreEntity {
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.UUID)
+//    String id;
 
     String category;
 

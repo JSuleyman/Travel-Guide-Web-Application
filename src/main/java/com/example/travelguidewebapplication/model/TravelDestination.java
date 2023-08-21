@@ -1,6 +1,7 @@
 package com.example.travelguidewebapplication.model;
 
 import com.example.travelguidewebapplication.enums.Status;
+import com.example.travelguidewebapplication.util.CoreEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -15,10 +16,10 @@ import java.util.List;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
-public class TravelDestination {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    String id;
+public class TravelDestination extends CoreEntity {
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.UUID)
+//    String id;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "card_status")

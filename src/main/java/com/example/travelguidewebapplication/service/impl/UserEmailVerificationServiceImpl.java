@@ -46,7 +46,7 @@ public class UserEmailVerificationServiceImpl implements UserEmailVerificationSe
             userEmailVerification.setHasExpired(true);
             userEmailVerificationRepository.save(userEmailVerification);
             // Doğrulama kodu süresi geçmişse, kullanıcıyı uyarın veya kodun yeniden gönderilmesini sağlayın.
-            throw new VerificationCodeHasExpired(); // TODO bura 1 error elave ele //Testting
+            throw new VerificationCodeHasExpired();
         }
 
         if (userEmailVerification.getVerificationCode().equals(verificationCode)) {
@@ -58,7 +58,7 @@ public class UserEmailVerificationServiceImpl implements UserEmailVerificationSe
             userEmailVerificationRepository.save(userEmailVerification);
             return "User email verification successful.";
         } else {
-            throw new InvalidVerificationCode(); //TODO burda da 2 inci error gonder //Testing
+            throw new InvalidVerificationCode();
         }
     }
 

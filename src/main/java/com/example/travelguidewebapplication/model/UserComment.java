@@ -1,5 +1,6 @@
 package com.example.travelguidewebapplication.model;
 
+import com.example.travelguidewebapplication.util.CoreEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -14,10 +15,11 @@ import java.util.List;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
-public class UserComment {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    String id;
+public class UserComment extends CoreEntity {
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.UUID)
+//    String id;
+    // TODO core entity i uygulamasan burada duzeldersen
 
     String commentList;
 

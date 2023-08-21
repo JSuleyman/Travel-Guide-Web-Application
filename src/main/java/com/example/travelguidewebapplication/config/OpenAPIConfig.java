@@ -12,12 +12,10 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @RequiredArgsConstructor
 @SecurityScheme(
-        name = "bearerAuth",
-        description = "JWT auth description",
-        scheme = "bearer",
+        name = "Bearer Authentication",
         type = SecuritySchemeType.HTTP,
         bearerFormat = "JWT",
-        in = SecuritySchemeIn.HEADER
+        scheme = "bearer"
 )
 public class OpenAPIConfig {
 
