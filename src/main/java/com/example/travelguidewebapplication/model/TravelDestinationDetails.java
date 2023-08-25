@@ -15,10 +15,6 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
 public class TravelDestinationDetails extends CoreEntity {
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.UUID)
-//    String id;
-
     String travelDestinationDescription;
 
     String events;

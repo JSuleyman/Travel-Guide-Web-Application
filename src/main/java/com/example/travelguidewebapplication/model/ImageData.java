@@ -13,10 +13,6 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
 public class ImageData extends CoreEntity {
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.UUID)
-//    String id;
-
     private String name;
 
     private String type;

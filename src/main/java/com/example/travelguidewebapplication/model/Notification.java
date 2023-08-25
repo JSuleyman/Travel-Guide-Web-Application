@@ -13,10 +13,6 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
 public class Notification extends CoreEntity {
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.UUID)
-//    String id;
-
     Integer fkUserId;
 
     String fkTravelDestinationId;

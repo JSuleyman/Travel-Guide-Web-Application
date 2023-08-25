@@ -17,10 +17,6 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
 public class TravelDestination extends CoreEntity {
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.UUID)
-//    String id;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "card_status")
     Status status;

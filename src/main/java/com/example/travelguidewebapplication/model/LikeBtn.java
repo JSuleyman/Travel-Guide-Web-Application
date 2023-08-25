@@ -15,10 +15,6 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class LikeBtn extends CoreEntity {
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.UUID)
-//    String id;
-
     @Column(name = "is_favorite")
     boolean isLike;
 

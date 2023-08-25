@@ -15,10 +15,6 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
 public class UserEmailVerification extends CoreEntity {
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.UUID)
-//    String id;
-
     String verificationCode;
     LocalDateTime verificationCodeCreatedAt;
     int verificationCodeExpirationMinutes;

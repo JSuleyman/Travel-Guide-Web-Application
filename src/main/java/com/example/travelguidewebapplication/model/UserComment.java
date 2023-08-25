@@ -16,11 +16,6 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
 public class UserComment extends CoreEntity {
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.UUID)
-//    String id;
-    // TODO core entity i uygulamasan burada duzeldersen
-
     String commentList;
 
     LocalDateTime localDateTime;

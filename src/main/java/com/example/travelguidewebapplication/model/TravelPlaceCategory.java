@@ -14,10 +14,6 @@ import java.util.Collection;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class TravelPlaceCategory extends CoreEntity {
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.UUID)
-//    String id;
-
     String category;
 
     String description;
