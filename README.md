@@ -2,6 +2,10 @@
 
 This project is a web application related to travel, allowing users to share travel information and manage their travel experiences. It has been developed using Spring Boot and deployed on Heroku.
 
+## Project Demo
+
+Check out the live demo of the project: [Travel Guide Web Application](https://jsuleyman.github.io/Travel-Guide-Web-Application-Fronted/#/)
+
 ## Features
 
 - Provides a platform for users to share their travel experiences.
