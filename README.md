@@ -1,4 +1,4 @@
-# Travel Guide Project With Spring Boot
+# Travel Guide Project With Spring Boot And React
 
 This project is a web application related to travel, allowing users to share travel information and manage their travel experiences. It has been developed using Spring Boot and deployed on Heroku.
 
