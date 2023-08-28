@@ -47,8 +47,6 @@ Check out the live demo of the project: [Travel Guide Web Application](https://j
 - **test/:** Contains unit and integration tests.
 - **pom.xml:** Lists all project dependencies.
 
-## Additional Details
-
 ## Usage
 
 To run the project locally, follow these steps:
