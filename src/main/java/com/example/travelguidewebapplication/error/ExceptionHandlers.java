@@ -90,6 +90,15 @@ public class ExceptionHandlers {
 
         return ResponseEntity.status(errorResponse.getStatus()).body(errorResponse);
     }
+
+    @ExceptionHandler(value = DuplicateWalletException.class)
+    public ResponseEntity<ErrorResponse> handleDuplicateWalletException(DuplicateWalletException ex) {
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setErrorMessage("Bu kullanıcı için zaten bir cüzdan kaydı bulunuyor.");
+        errorResponse.setStatus(HttpStatus.BAD_REQUEST);
+
+        return ResponseEntity.status(errorResponse.getStatus()).body(errorResponse);
+    }
 }
 
 

@@ -71,6 +71,10 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     List<UserEmailVerification> userEmailVerifications;
 
+    @Getter(value = AccessLevel.NONE)
+    @OneToMany(mappedBy = "userId", fetch = FetchType.LAZY)
+    List<Expenses> expensesList;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
