@@ -6,4 +6,5 @@ import lombok.Data;
 public class ExpensesRequestDTO {
     String costDescription;
     Double cost;
+//    String currencyId;
 }

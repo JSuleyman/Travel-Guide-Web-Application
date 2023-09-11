@@ -23,20 +23,30 @@ public class ExpensesServiceImpl implements ExpensesService {
     private final WalletService walletService;
     private final UserService userService;
     private final WalletRepository walletRepository;
+//    private final CurrencyRepository currencyRepository;
 
     @Override
     public MoneyLeftResponseDTO addNewCost(ExpensesRequestDTO expenses) {
+//        Currency currency;
+//        if (expenses.getCurrencyId() == null || expenses.getCurrencyId().trim().isEmpty()) {
+//            currency = currencyRepository.findByCurrency("AZN");
+//        } else {
+//            currency = currencyRepository.findById(expenses.getCurrencyId()).orElseThrow();
+//        }
         Expenses expenses1 = Expenses.builder()
                 .cost(expenses.getCost())
                 .costDescription(expenses.getCostDescription())
                 .userId(userService.getCurrentUser())
+//                .currencyId(currency)
                 .status("A")
                 .build();
         expensesRepository.save(expenses1);
 
         Wallet wallet = walletRepository.findByUser(userService.getCurrentUser());
-        wallet.setMoneyLeft(wallet.getMoneyLeft() - expenses1.getCost());
 
+        double number = wallet.getMoneyLeft() - expenses1.getCost();
+        double rounded = Math.round(number * 100.0) / 100.0;
+        wallet.setMoneyLeft(rounded);
         walletRepository.save(wallet);
 
         return MoneyLeftResponseDTO.builder()
@@ -53,6 +63,7 @@ public class ExpensesServiceImpl implements ExpensesService {
             ExpensesResponseDTO expensesResponseDTO = ExpensesResponseDTO.builder()
                     .cost(expenses.getCost())
                     .costDescription(expenses.getCostDescription())
+//                    .currency(expenses.getCurrencyId().getCurrency())
                     .id(expenses.getId())
                     .build();
             expensesResponseDTOS.add(expensesResponseDTO);
@@ -67,7 +78,9 @@ public class ExpensesServiceImpl implements ExpensesService {
         expensesRepository.save(expenses);
 
         Wallet wallet = walletRepository.findByUser(userService.getCurrentUser());
-        wallet.setMoneyLeft(wallet.getMoneyLeft() + expenses.getCost());
+        double number = wallet.getMoneyLeft() + expenses.getCost();
+        double rounded = Math.round(number * 100.0) / 100.0;
+        wallet.setMoneyLeft(rounded);
         walletRepository.save(wallet);
 
         return MoneyLeftResponseDTO.builder()

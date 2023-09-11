@@ -5,7 +5,6 @@ import com.example.travelguidewebapplication.DTO.WalletTotalMonetRequestDTO;
 import com.example.travelguidewebapplication.DTO.response.ExpensesResponseDTO;
 import com.example.travelguidewebapplication.DTO.response.MoneyLeftResponseDTO;
 import com.example.travelguidewebapplication.DTO.response.WalletTotalMonetResponseDTO;
-import com.example.travelguidewebapplication.model.Expenses;
 import com.example.travelguidewebapplication.service.inter.ExpensesService;
 import com.example.travelguidewebapplication.service.inter.WalletService;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +19,7 @@ import java.util.List;
 public class WalletController {
     private final WalletService walletService;
     private final ExpensesService expensesService;
+//    private final CurrencyService currencyService;
 
     @PostMapping("/total_money")
     public void addTotalMoney(@RequestBody WalletTotalMonetRequestDTO walletTotalMonetRequestDTO) {
@@ -52,4 +52,10 @@ public class WalletController {
     public ResponseEntity<MoneyLeftResponseDTO> deleteCostById(@RequestParam String id) {
         return ResponseEntity.ok(expensesService.deleteCostById(id));
     }
+
+//    //    Currencies
+//    @GetMapping("/currencies")
+//    public ResponseEntity<List<Currency>> getAll() {
+//        return ResponseEntity.ok(currencyService.getAll());
+//    }
 }

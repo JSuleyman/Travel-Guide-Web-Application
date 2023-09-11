@@ -23,4 +23,8 @@ public class Expenses extends CoreEntity {
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     User userId;
+
+//    @ManyToOne
+//    @JoinColumn(name = "currency_id", referencedColumnName = "id", nullable = false)
+//    Currency currencyId;
 }

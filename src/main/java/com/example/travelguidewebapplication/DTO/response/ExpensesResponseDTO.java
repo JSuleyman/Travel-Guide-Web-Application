@@ -11,5 +11,6 @@ import lombok.experimental.FieldDefaults;
 public class ExpensesResponseDTO {
     String costDescription;
     Double cost;
+//    String currency;
     String id;
 }
