@@ -12,6 +12,14 @@ import java.util.List;
 public interface ExpensesRepository extends JpaRepository<Expenses, String> {
     @Query("""
             SELECT e from Expenses e where e.userId = :userId
+            AND e.status = "A"
             """)
     List<Expenses> costListByUser(User userId);
+
+    @Query("""
+            SELECT e from Expenses e where e.userId = :userId
+            """)
+    List<Expenses> costListForDelete(User userId);
+
+    Expenses findByIdAndStatus(String id, String status);
 }
