@@ -31,6 +31,12 @@ public class WalletController {
         return ResponseEntity.ok(walletService.isHaveTotalMoney());
     }
 
+    @DeleteMapping("/reset_wallet")
+    public void resetUserWallet() {
+        walletService.resetUserWallet();
+    }
+
+    //    Expenses Methods
     @PostMapping("/cost")
     public ResponseEntity<MoneyLeftResponseDTO> addNewCost(@RequestBody ExpensesRequestDTO expenses) {
         System.out.println(expenses);
@@ -40,5 +46,10 @@ public class WalletController {
     @GetMapping("/cost_list")
     public ResponseEntity<List<ExpensesResponseDTO>> costListByUser() {
         return ResponseEntity.ok(expensesService.costListByUserId());
+    }
+
+    @PostMapping("/delete_cost")
+    public ResponseEntity<MoneyLeftResponseDTO> deleteCostById(@RequestParam String id) {
+        return ResponseEntity.ok(expensesService.deleteCostById(id));
     }
 }

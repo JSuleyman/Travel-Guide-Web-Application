@@ -18,6 +18,7 @@ import lombok.experimental.FieldDefaults;
 public class Expenses extends CoreEntity {
     String costDescription;
     Double cost;
+    String status;
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)

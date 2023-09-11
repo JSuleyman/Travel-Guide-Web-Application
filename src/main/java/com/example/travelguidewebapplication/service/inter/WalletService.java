@@ -8,5 +8,5 @@ public interface WalletService {
 
     WalletTotalMonetResponseDTO isHaveTotalMoney();
 
-
+    void resetUserWallet();
 }

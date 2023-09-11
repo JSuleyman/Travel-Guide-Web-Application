@@ -3,7 +3,6 @@ package com.example.travelguidewebapplication.service.impl;
 import com.example.travelguidewebapplication.DTO.ExpensesRequestDTO;
 import com.example.travelguidewebapplication.DTO.response.ExpensesResponseDTO;
 import com.example.travelguidewebapplication.DTO.response.MoneyLeftResponseDTO;
-import com.example.travelguidewebapplication.DTO.response.WalletTotalMonetResponseDTO;
 import com.example.travelguidewebapplication.model.Expenses;
 import com.example.travelguidewebapplication.model.Wallet;
 import com.example.travelguidewebapplication.repository.ExpensesRepository;
@@ -31,6 +30,7 @@ public class ExpensesServiceImpl implements ExpensesService {
                 .cost(expenses.getCost())
                 .costDescription(expenses.getCostDescription())
                 .userId(userService.getCurrentUser())
+                .status("A")
                 .build();
         expensesRepository.save(expenses1);
 
@@ -53,9 +53,25 @@ public class ExpensesServiceImpl implements ExpensesService {
             ExpensesResponseDTO expensesResponseDTO = ExpensesResponseDTO.builder()
                     .cost(expenses.getCost())
                     .costDescription(expenses.getCostDescription())
+                    .id(expenses.getId())
                     .build();
             expensesResponseDTOS.add(expensesResponseDTO);
         }
         return expensesResponseDTOS;
+    }
+
+    @Override
+    public MoneyLeftResponseDTO deleteCostById(String id) {
+        Expenses expenses = expensesRepository.findByIdAndStatus(id, "A");
+        expenses.setStatus("D");
+        expensesRepository.save(expenses);
+
+        Wallet wallet = walletRepository.findByUser(userService.getCurrentUser());
+        wallet.setMoneyLeft(wallet.getMoneyLeft() + expenses.getCost());
+        walletRepository.save(wallet);
+
+        return MoneyLeftResponseDTO.builder()
+                .moneyLeft(wallet.getMoneyLeft())
+                .build();
     }
 }

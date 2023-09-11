@@ -11,4 +11,6 @@ public interface ExpensesService {
     MoneyLeftResponseDTO addNewCost(ExpensesRequestDTO expenses);
 
     List<ExpensesResponseDTO> costListByUserId();
+
+    MoneyLeftResponseDTO deleteCostById(String id);
 }
