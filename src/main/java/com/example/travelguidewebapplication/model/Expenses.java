@@ -8,6 +8,8 @@ import jakarta.persistence.Table;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Data
 @Table(name = "cost_list")
@@ -19,6 +21,7 @@ public class Expenses extends CoreEntity {
     String costDescription;
     Double cost;
     String status;
+    LocalDateTime localDateTime;
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)

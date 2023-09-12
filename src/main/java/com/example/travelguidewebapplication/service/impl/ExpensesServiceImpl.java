@@ -10,7 +10,9 @@ import com.example.travelguidewebapplication.repository.WalletRepository;
 import com.example.travelguidewebapplication.service.inter.ExpensesService;
 import com.example.travelguidewebapplication.service.inter.UserService;
 import com.example.travelguidewebapplication.service.inter.WalletService;
+import com.example.travelguidewebapplication.util.DateHelper;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.type.descriptor.java.DataHelper;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -38,6 +40,7 @@ public class ExpensesServiceImpl implements ExpensesService {
                 .costDescription(expenses.getCostDescription())
                 .userId(userService.getCurrentUser())
 //                .currencyId(currency)
+                .localDateTime(DateHelper.getAzerbaijanDateTime())
                 .status("A")
                 .build();
         expensesRepository.save(expenses1);
@@ -64,6 +67,7 @@ public class ExpensesServiceImpl implements ExpensesService {
                     .cost(expenses.getCost())
                     .costDescription(expenses.getCostDescription())
 //                    .currency(expenses.getCurrencyId().getCurrency())
+                    .localDateTime(expenses.getLocalDateTime())
                     .id(expenses.getId())
                     .build();
             expensesResponseDTOS.add(expensesResponseDTO);
