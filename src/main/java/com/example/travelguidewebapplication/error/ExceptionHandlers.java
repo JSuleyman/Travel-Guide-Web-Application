@@ -99,6 +99,15 @@ public class ExceptionHandlers {
 
         return ResponseEntity.status(errorResponse.getStatus()).body(errorResponse);
     }
+
+    @ExceptionHandler(value = TotalMoneyLessThanExpenses.class)
+    public ResponseEntity<ErrorResponse> handleDuplicateWalletException(TotalMoneyLessThanExpenses ex) {
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setErrorMessage("Ümumi pul xərclərdən daha az olmamlıdır!");
+        errorResponse.setStatus(HttpStatus.BAD_REQUEST);
+
+        return ResponseEntity.status(errorResponse.getStatus()).body(errorResponse);
+    }
 }
 
 

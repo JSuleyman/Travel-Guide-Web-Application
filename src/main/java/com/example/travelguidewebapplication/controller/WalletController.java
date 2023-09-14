@@ -1,7 +1,7 @@
 package com.example.travelguidewebapplication.controller;
 
 import com.example.travelguidewebapplication.DTO.ExpensesRequestDTO;
-import com.example.travelguidewebapplication.DTO.WalletTotalMonetRequestDTO;
+import com.example.travelguidewebapplication.DTO.WalletTotalMoneyRequestDTO;
 import com.example.travelguidewebapplication.DTO.response.ExpensesResponseDTO;
 import com.example.travelguidewebapplication.DTO.response.MoneyLeftResponseDTO;
 import com.example.travelguidewebapplication.DTO.response.WalletTotalMonetResponseDTO;
@@ -22,13 +22,19 @@ public class WalletController {
 //    private final CurrencyService currencyService;
 
     @PostMapping("/total_money")
-    public void addTotalMoney(@RequestBody WalletTotalMonetRequestDTO walletTotalMonetRequestDTO) {
-        walletService.addTotalMoney(walletTotalMonetRequestDTO);
+    public void addTotalMoney(@RequestBody WalletTotalMoneyRequestDTO walletTotalMoneyRequestDTO) {
+        walletService.addTotalMoney(walletTotalMoneyRequestDTO);
     }
 
     @GetMapping("/is_have_total_money")
     public ResponseEntity<WalletTotalMonetResponseDTO> isHaveTotalMoney() {
         return ResponseEntity.ok(walletService.isHaveTotalMoney());
+    }
+
+    @PutMapping("/change_total_money")
+    public ResponseEntity<WalletTotalMonetResponseDTO> changeTotalMoney(
+            @RequestBody WalletTotalMoneyRequestDTO walletTotalMoneyRequestDTO) {
+        return ResponseEntity.ok(walletService.changeTotalMoney(walletTotalMoneyRequestDTO));
     }
 
     @DeleteMapping("/reset_wallet")

@@ -1,12 +1,15 @@
 package com.example.travelguidewebapplication.service.inter;
 
-import com.example.travelguidewebapplication.DTO.WalletTotalMonetRequestDTO;
+import com.example.travelguidewebapplication.DTO.WalletTotalMoneyRequestDTO;
 import com.example.travelguidewebapplication.DTO.response.WalletTotalMonetResponseDTO;
 
 public interface WalletService {
-    void addTotalMoney(WalletTotalMonetRequestDTO walletTotalMonetRequestDTO);
+    void addTotalMoney(WalletTotalMoneyRequestDTO walletTotalMoneyRequestDTO);
 
     WalletTotalMonetResponseDTO isHaveTotalMoney();
 
     void resetUserWallet();
+
+    WalletTotalMonetResponseDTO changeTotalMoney(WalletTotalMoneyRequestDTO monetRequestDTO);
+
 }
