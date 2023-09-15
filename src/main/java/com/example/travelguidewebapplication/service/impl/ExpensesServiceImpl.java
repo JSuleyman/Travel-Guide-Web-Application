@@ -3,6 +3,8 @@ package com.example.travelguidewebapplication.service.impl;
 import com.example.travelguidewebapplication.DTO.ExpensesRequestDTO;
 import com.example.travelguidewebapplication.DTO.response.ExpensesResponseDTO;
 import com.example.travelguidewebapplication.DTO.response.MoneyLeftResponseDTO;
+import com.example.travelguidewebapplication.exception.MoneyLeftLessThanCost;
+import com.example.travelguidewebapplication.exception.TotalMoneyLessThanExpenses;
 import com.example.travelguidewebapplication.model.Expenses;
 import com.example.travelguidewebapplication.model.Wallet;
 import com.example.travelguidewebapplication.repository.ExpensesRepository;
@@ -35,6 +37,14 @@ public class ExpensesServiceImpl implements ExpensesService {
 //        } else {
 //            currency = currencyRepository.findById(expenses.getCurrencyId()).orElseThrow();
 //        }
+        Wallet wallet = walletRepository.findByUser(userService.getCurrentUser());
+
+        if (wallet.getTotalMoney() < expenses.getCost()) {
+            throw new TotalMoneyLessThanExpenses();
+        } else if (wallet.getMoneyLeft() < expenses.getCost()) {
+            throw new MoneyLeftLessThanCost();
+        }
+
         Expenses expenses1 = Expenses.builder()
                 .cost(expenses.getCost())
                 .costDescription(expenses.getCostDescription())
@@ -44,8 +54,6 @@ public class ExpensesServiceImpl implements ExpensesService {
                 .status("A")
                 .build();
         expensesRepository.save(expenses1);
-
-        Wallet wallet = walletRepository.findByUser(userService.getCurrentUser());
 
         double number = wallet.getMoneyLeft() - expenses1.getCost();
         double rounded = Math.round(number * 100.0) / 100.0;

@@ -108,6 +108,15 @@ public class ExceptionHandlers {
 
         return ResponseEntity.status(errorResponse.getStatus()).body(errorResponse);
     }
+
+    @ExceptionHandler(value = MoneyLeftLessThanCost.class)
+    public ResponseEntity<ErrorResponse> handleMoneyLeftLessThanCost(MoneyLeftLessThanCost ex) {
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setErrorMessage("Qalan pul xərcdən daha az olmamlıdır!");
+        errorResponse.setStatus(HttpStatus.BAD_REQUEST);
+
+        return ResponseEntity.status(errorResponse.getStatus()).body(errorResponse);
+    }
 }
 
 
