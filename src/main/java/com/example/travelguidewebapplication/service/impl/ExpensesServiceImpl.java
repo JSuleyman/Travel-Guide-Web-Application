@@ -1,18 +1,23 @@
 package com.example.travelguidewebapplication.service.impl;
 
+import com.example.travelguidewebapplication.DTO.ExpensesDateFilterRequestDTO;
 import com.example.travelguidewebapplication.DTO.ExpensesRequestDTO;
 import com.example.travelguidewebapplication.DTO.response.ExpensesResponseDTO;
 import com.example.travelguidewebapplication.DTO.response.MoneyLeftResponseDTO;
 import com.example.travelguidewebapplication.exception.MoneyLeftLessThanCost;
 import com.example.travelguidewebapplication.exception.TotalMoneyLessThanExpenses;
 import com.example.travelguidewebapplication.model.Expenses;
+import com.example.travelguidewebapplication.model.SalesReceipt;
 import com.example.travelguidewebapplication.model.Wallet;
 import com.example.travelguidewebapplication.repository.ExpensesRepository;
+import com.example.travelguidewebapplication.repository.SalesReceiptRepository;
 import com.example.travelguidewebapplication.repository.WalletRepository;
 import com.example.travelguidewebapplication.service.inter.ExpensesService;
+import com.example.travelguidewebapplication.service.inter.SalesReceiptService;
 import com.example.travelguidewebapplication.service.inter.UserService;
 import com.example.travelguidewebapplication.service.inter.WalletService;
 import com.example.travelguidewebapplication.util.DateHelper;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.type.descriptor.java.DataHelper;
 import org.springframework.stereotype.Service;
@@ -27,6 +32,7 @@ public class ExpensesServiceImpl implements ExpensesService {
     private final WalletService walletService;
     private final UserService userService;
     private final WalletRepository walletRepository;
+    private final SalesReceiptRepository salesReceiptRepository;
 //    private final CurrencyRepository currencyRepository;
 
     @Override
@@ -62,21 +68,34 @@ public class ExpensesServiceImpl implements ExpensesService {
 
         return MoneyLeftResponseDTO.builder()
                 .moneyLeft(wallet.getMoneyLeft())
+                .expenseId(expenses1.getId())
                 .build();
     }
 
     @Override
+    @Transactional
     public List<ExpensesResponseDTO> costListByUserId() {
         List<Expenses> expensesList = expensesRepository.costListByUser(userService.getCurrentUser());
         List<ExpensesResponseDTO> expensesResponseDTOS = new ArrayList<>();
 
+
         for (Expenses expenses : expensesList) {
+            SalesReceipt salesReceipt = salesReceiptRepository.findByExpense(expenses);
+            boolean isHaveImage;
+
+            if (salesReceipt == null) {
+                isHaveImage = false;
+            } else {
+                isHaveImage = true;
+            }
+
             ExpensesResponseDTO expensesResponseDTO = ExpensesResponseDTO.builder()
                     .cost(expenses.getCost())
                     .costDescription(expenses.getCostDescription())
 //                    .currency(expenses.getCurrencyId().getCurrency())
                     .localDateTime(expenses.getLocalDateTime())
                     .id(expenses.getId())
+                    .isHaveImage(isHaveImage)
                     .build();
             expensesResponseDTOS.add(expensesResponseDTO);
         }
@@ -84,6 +103,7 @@ public class ExpensesServiceImpl implements ExpensesService {
     }
 
     @Override
+    @Transactional
     public MoneyLeftResponseDTO deleteCostById(String id) {
         Expenses expenses = expensesRepository.findByIdAndStatus(id, "A");
         expenses.setStatus("D");
@@ -95,8 +115,20 @@ public class ExpensesServiceImpl implements ExpensesService {
         wallet.setMoneyLeft(rounded);
         walletRepository.save(wallet);
 
+        SalesReceipt salesReceipt = salesReceiptRepository.findByExpense(expenses);
+        if (salesReceipt != null) {
+            salesReceiptRepository.delete(salesReceipt);
+        }
+
+
         return MoneyLeftResponseDTO.builder()
                 .moneyLeft(wallet.getMoneyLeft())
                 .build();
+    }
+
+    @Override
+    public List<ExpensesResponseDTO> costListByDateFilter(
+            ExpensesDateFilterRequestDTO expensesDateFilterRequestDTO) {
+        return null;
     }
 }

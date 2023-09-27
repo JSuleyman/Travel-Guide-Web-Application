@@ -11,4 +11,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MoneyLeftResponseDTO {
     Double moneyLeft;
+    String expenseId;
 }

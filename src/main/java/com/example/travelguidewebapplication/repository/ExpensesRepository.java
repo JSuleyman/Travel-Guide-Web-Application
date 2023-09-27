@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -22,4 +23,9 @@ public interface ExpensesRepository extends JpaRepository<Expenses, String> {
     List<Expenses> costListForDelete(User userId);
 
     Expenses findByIdAndStatus(String id, String status);
+
+    @Query("""
+            SELECT e FROM Expenses e where e.localDateTime BETWEEN :startDate AND :endDate
+            """)
+    List<Expenses> filterDate(LocalDateTime startDate, LocalDateTime endDate);
 }

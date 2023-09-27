@@ -16,4 +16,5 @@ public class ExpensesResponseDTO {
     //    String currency;
     String id;
     LocalDateTime localDateTime;
+    boolean isHaveImage;
 }
