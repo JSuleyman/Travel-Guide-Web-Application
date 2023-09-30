@@ -74,7 +74,9 @@ public class WalletServiceImpl implements WalletService {
 
         for (Expenses expenses : expensesList) {
             SalesReceipt salesReceipt = salesReceiptRepository.findByExpense(expenses);
-            salesReceiptRepository.delete(salesReceipt);
+            if (salesReceipt != null) {
+                salesReceiptRepository.delete(salesReceipt);
+            }
         }
         expensesRepository.deleteAll(expensesList);
 
