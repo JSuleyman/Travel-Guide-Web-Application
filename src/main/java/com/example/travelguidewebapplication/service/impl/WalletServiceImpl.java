@@ -5,9 +5,11 @@ import com.example.travelguidewebapplication.DTO.response.WalletTotalMonetRespon
 import com.example.travelguidewebapplication.exception.DuplicateWalletException;
 import com.example.travelguidewebapplication.exception.TotalMoneyLessThanExpenses;
 import com.example.travelguidewebapplication.model.Expenses;
+import com.example.travelguidewebapplication.model.SalesReceipt;
 import com.example.travelguidewebapplication.model.User;
 import com.example.travelguidewebapplication.model.Wallet;
 import com.example.travelguidewebapplication.repository.ExpensesRepository;
+import com.example.travelguidewebapplication.repository.SalesReceiptRepository;
 import com.example.travelguidewebapplication.repository.WalletRepository;
 import com.example.travelguidewebapplication.service.inter.UserService;
 import com.example.travelguidewebapplication.service.inter.WalletService;
@@ -23,6 +25,7 @@ public class WalletServiceImpl implements WalletService {
     private final WalletRepository walletRepository;
     private final UserService userService;
     private final ExpensesRepository expensesRepository;
+    private final SalesReceiptRepository salesReceiptRepository;
 
     @Override
     public void addTotalMoney(WalletTotalMoneyRequestDTO walletTotalMoneyRequestDTO) {
@@ -68,6 +71,11 @@ public class WalletServiceImpl implements WalletService {
         User user = userService.getCurrentUser();
 
         List<Expenses> expensesList = expensesRepository.costListForDelete(user);
+
+        for (Expenses expenses : expensesList) {
+            SalesReceipt salesReceipt = salesReceiptRepository.findByExpense(expenses);
+            salesReceiptRepository.delete(salesReceipt);
+        }
         expensesRepository.deleteAll(expensesList);
 
         Wallet existingWallet = walletRepository.findByUser(user);
