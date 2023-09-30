@@ -13,6 +13,7 @@ import com.example.travelguidewebapplication.repository.SalesReceiptRepository;
 import com.example.travelguidewebapplication.repository.WalletRepository;
 import com.example.travelguidewebapplication.service.inter.UserService;
 import com.example.travelguidewebapplication.service.inter.WalletService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -67,6 +68,7 @@ public class WalletServiceImpl implements WalletService {
     }
 
     @Override
+    @Transactional
     public void resetUserWallet() {
         User user = userService.getCurrentUser();
 
