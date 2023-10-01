@@ -16,6 +16,8 @@ import lombok.experimental.FieldDefaults;
 public class AnswerToQuestions extends CoreEntity {
     String answer;
 
+    String restaurantId;
+
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "question_id", nullable = false)

@@ -8,9 +8,9 @@ import java.util.List;
 
 @Repository
 public interface QuestionsRepository extends JpaRepository<Questions, String> {
-    @Query("""
-            select q from AnswerToQuestions q
-            INNER JOIN q.questions
-            """)
-    List<AnswerToQuestions> getAllQuestionWithAnswer();
+//    @Query("""
+//            select q from AnswerToQuestions q
+//            INNER JOIN q.questions
+//            """)
+//    List<AnswerToQuestions> getAllQuestionWithAnswer();
 }

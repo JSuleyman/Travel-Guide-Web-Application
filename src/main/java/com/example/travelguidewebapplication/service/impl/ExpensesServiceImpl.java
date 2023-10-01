@@ -98,6 +98,7 @@ public class ExpensesServiceImpl implements ExpensesService {
                     .isHaveImage(isHaveImage)
                     .build();
             expensesResponseDTOS.add(expensesResponseDTO);
+            System.out.println("isHaveImage: " + isHaveImage);
         }
         return expensesResponseDTOS;
     }

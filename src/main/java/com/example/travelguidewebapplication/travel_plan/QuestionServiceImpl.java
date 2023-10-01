@@ -17,20 +17,26 @@ import static java.rmi.server.LogStream.log;
 @Slf4j
 public class QuestionServiceImpl {
     private final QuestionsRepository questionsRepository;
+    private final AnswerToQuestionsRepository answerToQuestionsRepository;
 
-    public HashMap<String, String> getAllQuestionWithAnswer() {
-        log.info("Testtt: " + questionsRepository.getAllQuestionWithAnswer());
-        List<AnswerToQuestions> answerToQuestions = questionsRepository.getAllQuestionWithAnswer();
-        log.info("Questionsss: " + answerToQuestions.get(0).getQuestions());
-        HashMap<String, String> questionsDTOS = new HashMap<>();
+    public List<QuestionsDTO> getAllQuestionWithAnswer() {
+        List<Questions> questions = questionsRepository.findAll();
+        List<QuestionsDTO> questionsDTOS = new ArrayList<>();
 
-        for (AnswerToQuestions answerToQuestions1 : answerToQuestions) {
-            questionsDTOS.put(answerToQuestions1.getQuestions().getQuestion(), answerToQuestions1.getAnswer());
+        for (Questions question : questions) {
+            List<String> answers = answerToQuestionsRepository.findByQuestions(question);
+            QuestionsDTO questionsDTO = QuestionsDTO.builder()
+                    .question(question.getQuestion())
+                    .answers(answers)
+                    .build();
+            questionsDTOS.add(questionsDTO);
         }
 
-        for (Map.Entry<String, String> entry : questionsDTOS.entrySet()) {
-            System.out.println(entry.getKey() + "value: " + entry.getValue());
-        }
+//        for (Map.Entry<String, List<String>> entry : questionsDTOS.entrySet()) {
+//            for (String asdas : entry.getValue()) {
+//                System.out.println(entry.getKey() + "value: " + asdas);
+//            }
+//        }
 
         return questionsDTOS;
     }

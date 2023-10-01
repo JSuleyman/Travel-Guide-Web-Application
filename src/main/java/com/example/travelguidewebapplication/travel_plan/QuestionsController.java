@@ -16,7 +16,7 @@ public class QuestionsController {
     private final QuestionServiceImpl questionService;
 
     @GetMapping
-    public ResponseEntity<HashMap<String,String>> getQuestionService() {
+    public ResponseEntity<List<QuestionsDTO>> getQuestionService() {
         return ResponseEntity.ok(questionService.getAllQuestionWithAnswer());
     }
 }

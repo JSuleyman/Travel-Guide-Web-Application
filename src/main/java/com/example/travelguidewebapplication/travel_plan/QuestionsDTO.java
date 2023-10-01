@@ -4,6 +4,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.util.HashMap;
+import java.util.List;
 
 @Data
 @Builder
@@ -11,5 +12,6 @@ import java.util.HashMap;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class QuestionsDTO {
-    HashMap<String, String> questionsWithAnswer;
+    String question;
+    List<String> answers;
 }
