@@ -44,7 +44,7 @@ Check out the live demo of the project: [Travel Guide Web Application](https://j
 - **repository:** Communicates with the database.
 - **service:** Contains business logic.
 - **util:** Holds utility classes.
-- **test/:** Contains unit and integration tests.
+- **test/:** Contains unit tests.
 - **pom.xml:** Lists all project dependencies.
 
 ## Usage
