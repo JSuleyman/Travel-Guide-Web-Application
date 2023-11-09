@@ -19,7 +19,7 @@ public class IsAnswerAllTheQuestionController {
     @PostMapping
     public void isAnswerAllTheQuestion() {
         IsAnswerAllTheQuestion isAnswerAllTheQuestion = repository.findByUser(userService.getCurrentUser());
-        if (isAnswerAllTheQuestion == null) {
+        if (isAnswerAllTheQuestion != null) {
             throw new RuntimeException();
         }
         repository.save(IsAnswerAllTheQuestion.builder()
