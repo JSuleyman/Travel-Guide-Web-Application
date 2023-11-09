@@ -1,9 +1,8 @@
-package com.example.travelguidewebapplication.travel_plan;
+package com.example.travelguidewebapplication.travel_plan_test;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.util.HashMap;
 import java.util.List;
 
 @Data

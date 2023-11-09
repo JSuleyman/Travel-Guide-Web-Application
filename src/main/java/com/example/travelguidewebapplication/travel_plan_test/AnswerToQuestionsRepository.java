@@ -1,4 +1,4 @@
-package com.example.travelguidewebapplication.travel_plan;
+package com.example.travelguidewebapplication.travel_plan_test;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

@@ -1,4 +1,4 @@
-package com.example.travelguidewebapplication.travel_plan;
+package com.example.travelguidewebapplication.travel_plan_test;
 
 import com.example.travelguidewebapplication.util.CoreEntity;
 import jakarta.persistence.*;

@@ -1,16 +1,11 @@
-package com.example.travelguidewebapplication.travel_plan;
+package com.example.travelguidewebapplication.travel_plan_test;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import static java.rmi.server.LogStream.log;
 
 @Service
 @RequiredArgsConstructor
