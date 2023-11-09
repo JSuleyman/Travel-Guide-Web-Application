@@ -18,6 +18,10 @@ public class IsAnswerAllTheQuestionController {
 
     @PostMapping
     public void isAnswerAllTheQuestion() {
+        IsAnswerAllTheQuestion isAnswerAllTheQuestion = repository.findByUser(userService.getCurrentUser());
+        if (isAnswerAllTheQuestion.isAnswerAllTheQuestion()) {
+            throw new RuntimeException();
+        }
         repository.save(IsAnswerAllTheQuestion.builder()
                 .user(userService.getCurrentUser())
                 .isAnswerAllTheQuestion(true)
